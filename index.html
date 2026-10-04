@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Re-crea | Reciclaje y cuidado del medioambiente</title>
+  <meta name="description" content="Re-crea: proyecto del Liceo 7 Luisa Saavedra para ayudar a las personas a reciclar y cuidar el medioambiente. Haz el cuestionario y recibe recomendaciones para tu perfil.">
+
+  <!-- Tipografía (opcional). Si no carga, el navegador usa una fuente del sistema. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <!-- ===================== ENCABEZADO ===================== -->
+  <header class="encabezado">
+    <div class="contenedor encabezado__fila">
+      <a href="#inicio" class="marca" aria-label="Re-crea, ir al inicio">
+        <img src="img/logo.png" alt="Logotipo Re-crea" class="marca__logo">
+      </a>
+      <button class="menu-boton" id="menuBoton" aria-expanded="false" aria-controls="menu">Menú</button>
+      <nav class="menu" id="menu" aria-label="Principal">
+        <a href="#proyecto">El proyecto</a>
+        <a href="#cuestionario">Cuestionario</a>
+        <a href="#contenedores">¿Dónde reciclo?</a>
+        <a href="#puntos">Dónde reciclar</a>
+        <a href="#opiniones">Opiniones</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido">
+
+    <!-- ===================== INICIO ===================== -->
+    <section class="hero" id="inicio">
+      <div class="contenedor hero__fila">
+        <div class="hero__texto">
+          <p class="etiqueta">Proyecto del Liceo 7 Luisa Saavedra · Providencia</p>
+          <h1>Reciclar es más fácil de lo que parece</h1>
+          <p class="hero__bajada">Responde 6 preguntas rápidas y te mostramos cómo reciclar, compostar y cuidar el medioambiente según tu forma de vivir.</p>
+          <div class="hero__botones">
+            <a href="#cuestionario" class="boton boton--primario">Hacer el cuestionario</a>
+            <a href="#proyecto" class="boton boton--secundario">Conocer Re-crea</a>
+          </div>
+        </div>
+        <div class="hero__imagen">
+          <img src="img/logo.png" alt="Re-crea escrito a mano en verde">
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== EL PROYECTO ===================== -->
+    <section class="seccion" id="proyecto">
+      <div class="contenedor">
+        <h2>¿Qué es Re-crea?</h2>
+        <div class="dos-columnas">
+          <div>
+            <p>Re-crea es un proyecto creado por estudiantes de tercero medio del electivo de Economía del Liceo 7 Luisa Saavedra de Providencia.</p>
+            <p>Nuestra idea es <strong>ayudar a los consumidores a ser más responsables</strong> con lo que compran, usan y desechan, y apoyar cada vez más el cuidado del medioambiente.</p>
+          </div>
+          <div class="objetivo">
+            <h3>Nuestro objetivo</h3>
+            <p>Que cada persona, viva en casa o en departamento, tenga tiempo de sobra o no, encuentre una forma concreta y realista de aportar al planeta.</p>
+          </div>
+        </div>
+        <ul class="pilares">
+          <li><strong>Reducir</strong><span>Consumir solo lo necesario.</span></li>
+          <li><strong>Reutilizar</strong><span>Darle una segunda vida a las cosas.</span></li>
+          <li><strong>Reciclar</strong><span>Separar bien para que el material sirva.</span></li>
+          <li><strong>Compostar</strong><span>Convertir restos de comida en abono.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================== CUESTIONARIO ===================== -->
+    <section class="seccion seccion--suave" id="cuestionario">
+      <div class="contenedor contenedor--angosto">
+        <h2>¿Cuál es tu perfil de reciclaje?</h2>
+        <p class="seccion__intro">No hay respuestas buenas ni malas. Elige la opción que más se parezca a tu realidad y te daremos recomendaciones a tu medida.</p>
+
+        <div class="tarjeta" id="quiz" aria-live="polite">
+          <!-- Aquí JavaScript dibuja las preguntas y los resultados (archivo js/cuestionario.js) -->
+          <noscript>Para usar el cuestionario necesitas activar JavaScript en tu navegador.</noscript>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== QUÉ VA DÓNDE ===================== -->
+    <section class="seccion" id="contenedores">
+      <div class="contenedor">
+        <h2>¿Qué va en cada contenedor?</h2>
+        <p class="seccion__intro">Una guía rápida. Los colores pueden variar según la comuna o el sistema de recolección, así que revisa siempre la señalética de tu edificio o punto de reciclaje.</p>
+
+        <div class="grilla grilla--4">
+          <article class="material material--papel">
+            <h3>Papel y cartón</h3>
+            <p class="material__si"><strong>Sí:</strong> diarios, revistas, cuadernos, cajas de cartón, cajas de cereal.</p>
+            <p class="material__no"><strong>No:</strong> papel con grasa o comida (ej. caja de pizza sucia), servilletas y papel higiénico usados.</p>
+          </article>
+          <article class="material material--envases">
+            <h3>Plásticos y latas</h3>
+            <p class="material__si"><strong>Sí:</strong> botellas, envases de detergente o yogur, latas de bebida y de conserva, Tetra Pak.</p>
+            <p class="material__no"><strong>No:</strong> envases con mucha comida, plumavit (poliestireno expandido), pilas.</p>
+          </article>
+          <article class="material material--vidrio">
+            <h3>Vidrio</h3>
+            <p class="material__si"><strong>Sí:</strong> botellas y frascos de vidrio (vino, jugo, conservas).</p>
+            <p class="material__no"><strong>No:</strong> espejos, ampolletas, vasos o platos rotos.</p>
+          </article>
+          <article class="material material--organico">
+            <h3>Orgánicos</h3>
+            <p class="material__si"><strong>Sí:</strong> cáscaras de frutas y verduras, restos de café y té, cáscaras de huevo.</p>
+            <p class="material__no"><strong>No:</strong> carnes, lácteos y comida cocinada con mucho aceite (en compost casero).</p>
+          </article>
+        </div>
+
+        <div class="consejo">
+          <h3>Tres reglas simples para todo lo que reciclas</h3>
+          <ol>
+            <li><strong>Vacío:</strong> sin restos de comida o líquido.</li>
+            <li><strong>Enjuagado y seco:</strong> basta un enjuague rápido, no hace falta lavar a fondo.</li>
+            <li><strong>Aplastado:</strong> botellas, latas y cajas ocupan menos espacio.</li>
+          </ol>
+          <p class="nota">Pilas, ampolletas, aparatos electrónicos y productos peligrosos no van en el contenedor común: requieren puntos de recepción especiales.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== DÓNDE RECICLAR ===================== -->
+    <section class="seccion seccion--suave" id="puntos">
+      <div class="contenedor">
+        <h2>Dónde reciclar en Providencia</h2>
+        <p class="seccion__intro">Los servicios de reciclaje cambian con el tiempo, por eso te dejamos los enlaces oficiales en vez de direcciones que podrían quedar desactualizadas.</p>
+
+        <div class="grilla grilla--3">
+          <article class="enlace-tarjeta">
+            <h3>Mapa oficial de puntos limpios</h3>
+            <p>El Ministerio del Medio Ambiente mantiene un mapa de puntos limpios y puntos verdes de la Región Metropolitana. Busca el más cercano a tu casa.</p>
+            <a class="boton boton--secundario" href="https://puntoslimpios.mma.gob.cl/" target="_blank" rel="noopener">Abrir mapa</a>
+          </article>
+          <article class="enlace-tarjeta">
+            <h3>Recolección selectiva en tu comuna</h3>
+            <p>Según la Municipalidad de Providencia, desde octubre de 2023 funciona la recolección selectiva de papel y cartón, envases livianos y vidrio bajo la Ley REP, con la app de ReSimple para ver horarios y puntos.</p>
+            <a class="boton boton--secundario" href="https://providencia.cl/provi/vive/medioambiente/ley-de-responsabilidad-extendida-del-productor-rep" target="_blank" rel="noopener">Ver información municipal</a>
+          </article>
+          <article class="enlace-tarjeta">
+            <h3>¿Qué es la Ley REP?</h3>
+            <p>La Ley de Responsabilidad Extendida del Productor (Ley 20.920) obliga a las empresas a hacerse cargo de los productos y envases que ponen en el mercado cuando se transforman en residuo.</p>
+            <a class="boton boton--secundario" href="https://providencia.cl/provi/explora/noticias/medio-ambiente/el-proximo-lunes-02-de-octubre-se-da-inicio-en-todo-el-pais-la-ley-rep" target="_blank" rel="noopener">Leer la noticia</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== OPINIONES ===================== -->
+    <section class="seccion" id="opiniones">
+      <div class="contenedor">
+        <h2>Tu opinión importa</h2>
+        <p class="seccion__intro">¿Cómo crees que podemos aportar entre todos al cuidado del medioambiente? Cuéntanos tu idea. Las opiniones se revisan antes de publicarse para mantener un espacio respetuoso.</p>
+
+        <div class="dos-columnas dos-columnas--opiniones">
+          <form class="tarjeta" id="formOpinion" novalidate>
+            <h3>Comparte tu idea</h3>
+
+            <label for="opNombre">Tu nombre o apodo</label>
+            <input type="text" id="opNombre" name="nombre" maxlength="40" placeholder="Ej: Camila" required>
+
+            <label for="opCategoria">¿Sobre qué es tu idea?</label>
+            <select id="opCategoria" name="categoria" required>
+              <option value="">Elige una opción</option>
+              <option>Reducir</option>
+              <option>Reutilizar</option>
+              <option>Reciclar</option>
+              <option>Compostar</option>
+              <option>Otra idea</option>
+            </select>
+
+            <label for="opMensaje">Tu opinión o idea</label>
+            <textarea id="opMensaje" name="mensaje" rows="5" maxlength="500" placeholder="¿Cómo podríamos aportar más?" required></textarea>
+            <p class="contador"><span id="opContador">0</span>/500</p>
+
+            <!-- Campo trampa contra bots: las personas no lo ven -->
+            <div class="trampa" aria-hidden="true">
+              <label for="opWeb">No llenar</label>
+              <input type="text" id="opWeb" name="web" tabindex="-1" autocomplete="off">
+            </div>
+
+            <button type="submit" class="boton boton--primario" id="opEnviar">Enviar opinión</button>
+            <p class="estado" id="opEstado" role="status"></p>
+          </form>
+
+          <div>
+            <h3>Lo que opina la comunidad</h3>
+            <p class="aviso" id="opAviso" hidden></p>
+            <ul class="opiniones" id="opLista">
+              <li class="opinion opinion--vacia">Cargando opiniones…</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== PIE ===================== -->
+  <footer class="pie">
+    <div class="contenedor pie__fila">
+      <img src="img/logo.png" alt="Re-crea" class="pie__logo">
+      <p>Proyecto formativo de estudiantes de tercero medio, electivo de Economía.<br>Liceo 7 Luisa Saavedra · Providencia, Chile.</p>
+    </div>
+  </footer>
+
+  <script src="js/cuestionario.js"></script>
+  <!-- opiniones.js es un "módulo" porque usa Firebase -->
+  <script type="module" src="js/opiniones.js"></script>
+  <script>
+    // Menú para celulares
+    const boton = document.getElementById('menuBoton');
+    const menu = document.getElementById('menu');
+    boton.addEventListener('click', () => {
+      const abierto = menu.classList.toggle('menu--abierto');
+      boton.setAttribute('aria-expanded', abierto);
+    });
+    menu.addEventListener('click', e => {
+      if (e.target.tagName === 'A') { menu.classList.remove('menu--abierto'); boton.setAttribute('aria-expanded', false); }
+    });
+  </script>
+</body>
+</html>

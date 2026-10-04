@@ -1,0 +1,28 @@
+rules_version = '2';
+
+// Reglas de seguridad para el muro de opiniones de Re-crea.
+// Se pegan en: Firebase consola -> Firestore Database -> pestaña "Reglas" -> Publicar.
+//
+// Qué permiten:
+//  - Cualquier persona puede LEER solo las opiniones aprobadas (approved == true).
+//  - Cualquier persona puede CREAR una opinión, pero siempre queda "pendiente" (approved == false)
+//    y con límites de largo. Ustedes la aprueban cambiando approved a true en la consola.
+//  - Nadie puede editar ni borrar desde la página web.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /opiniones/{id} {
+      allow read: if resource.data.approved == true;
+
+      allow create: if request.resource.data.keys().hasOnly(['nombre', 'categoria', 'mensaje', 'fecha', 'approved'])
+        && request.resource.data.approved == false
+        && request.resource.data.nombre is string
+        && request.resource.data.nombre.size() > 0 && request.resource.data.nombre.size() <= 40
+        && request.resource.data.categoria in ['Reducir', 'Reutilizar', 'Reciclar', 'Compostar', 'Otra idea']
+        && request.resource.data.mensaje is string
+        && request.resource.data.mensaje.size() >= 5 && request.resource.data.mensaje.size() <= 500
+        && request.resource.data.fecha == request.time;
+
+      allow update, delete: if false;
+    }
+  }
+}
