@@ -12,12 +12,12 @@
    ========================================================== */
 
 export const firebaseConfig = {
-  apiKey: "PEGA_AQUI_TU_API_KEY",
-  authDomain: "PEGA_AQUI.firebaseapp.com",
-  projectId: "PEGA_AQUI_TU_PROJECT_ID",
-  storageBucket: "PEGA_AQUI.appspot.com",
-  messagingSenderId: "PEGA_AQUI",
-  appId: "PEGA_AQUI"
+  apiKey: "AIzaSyBM5CxgyyBkvPbuB63I9bYR5enDTEEmUpg",
+  authDomain: "re-crea-de9c0.firebaseapp.com",
+  projectId: "re-crea-de9c0",
+  storageBucket: "re-crea-de9c0.firebasestorage.app",
+  messagingSenderId: "435187308670",
+  appId: "1:435187308670:web:4a37e5780a11e08da3e02f"
 };
 
 // Nota: todas las opiniones nuevas quedan "pendientes" hasta que ustedes las aprueben en Firebase
