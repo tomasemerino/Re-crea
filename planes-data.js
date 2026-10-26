@@ -4,7 +4,7 @@
      1) PLANES          -> nombres, precios y beneficios (¡precios ficticios!)
      2) PERFILES_PLUS   -> los 6 perfiles del cuestionario
      3) CONTENIDO_PLUS  -> el plan de cada mes para cada perfil
-   Las páginas planes.html, inscripcion.html, miembros.html y modelo.html leen este archivo.
+   Las páginas planes.html, inscripcion.html y miembros.html leen este archivo.
    ========================================================== */
 
 /* ---------- 1) PLANES (precios ficticios, en pesos chilenos) ---------- */
@@ -324,3 +324,25 @@ const CONTENIDO_PLUS = {
     }
   }
 };
+
+/* ---------- 4) USUARIOS DE EJEMPLO ----------
+   Personas ficticias para que quien visite la demostración pueda "entrar" y ver cómo se ve cada plan,
+   sin tener que crear una cuenta. Se activan desde "Mi cuenta".
+   progresoInicial: { mes: [números de las tareas ya marcadas, empezando en 0] } */
+const USUARIOS_EJEMPLO = [
+  {
+    id: 'ejemplo-valentina', apodo: 'Valentina', perfilId: 'sin-tiempo', vivienda: 'depto', plan: 'mensual',
+    descripcion: 'Vive en departamento y tiene poco tiempo. Plan Plus mensual con el mes 1 avanzado.',
+    progresoInicial: { 1: [0, 1, 2] }
+  },
+  {
+    id: 'ejemplo-matias', apodo: 'Matías', perfilId: 'listo', vivienda: 'casa', plan: 'anual',
+    descripcion: 'Vive en casa y quiere partir. Plus anual, con el mes 1 completo y el mes 2 recién empezado.',
+    progresoInicial: { 1: [0, 1, 2, 3], 2: [0] }
+  },
+  {
+    id: 'ejemplo-sofia', apodo: 'Sofía', perfilId: 'esceptico', vivienda: 'depto', plan: 'gratis',
+    descripcion: 'Escéptica curiosa con plan Gratis. Sirve para ver qué se bloquea sin Plus.',
+    progresoInicial: {}
+  }
+];

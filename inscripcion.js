@@ -1,8 +1,8 @@
 /* ==========================================================
    Re-crea · inscripcion.js
-   Inscripción SIMULADA:
-   - No pide ni guarda datos de pago.
-   - Guarda en el navegador (localStorage) una "membresía" de ejemplo.
+   Crear una cuenta SIMULADA y elegir plan.
+   - No hay contraseñas ni datos de pago.
+   - La cuenta se guarda solo en este navegador (ver js/estado.js).
    ========================================================== */
 (function () {
   const form = document.getElementById('formInscripcion');
@@ -15,11 +15,11 @@
   const estado = document.getElementById('estadoForm');
 
   const perfilGuardado = Recrea.perfil();
-  const planesPagos = PLANES.filter(p => p.precio > 0);
+  const sesion = Recrea.usuarioActivo();
 
   // Plan elegido por la dirección: inscripcion.html?plan=anual
   const parametro = new URLSearchParams(location.search).get('plan');
-  const planInicial = planesPagos.some(p => p.id === parametro) ? parametro : 'mensual';
+  const planInicial = PLANES.some(p => p.id === parametro) ? parametro : 'mensual';
 
   function el(tag, clase, texto) {
     const e = document.createElement(tag);
@@ -28,14 +28,21 @@
     return e;
   }
 
+  /* ---------- Aviso si ya hay una sesión ---------- */
+  if (sesion) {
+    const n = el('p', 'ayuda', 'Ya tienes la sesión iniciada como ' + sesion.apodo + '. Al crear una cuenta nueva, pasarás a usar la nueva.');
+    form.prepend(n);
+  }
+
   /* ---------- 1) Opciones de plan ---------- */
-  planesPagos.forEach(plan => {
+  PLANES.forEach(plan => {
     const label = el('label', 'opcion-plan');
     const input = el('input');
     input.type = 'radio'; input.name = 'plan'; input.value = plan.id;
     input.checked = plan.id === planInicial;
     const caja = el('span', 'opcion-plan__caja');
-    caja.append(el('strong', '', plan.nombre), el('span', '', formatoCLP(plan.precio) + ' ' + plan.periodo + ' (ficticio)'));
+    const detalle = plan.precio === 0 ? 'Gratis' : formatoCLP(plan.precio) + ' ' + plan.periodo + ' (ficticio)';
+    caja.append(el('strong', '', plan.nombre), el('span', '', detalle));
     label.append(input, caja);
     opcionesPlan.append(label);
   });
@@ -98,35 +105,31 @@
     if (!vivienda) return mostrarError('Indica si vives en casa o en departamento.');
     if (!acepto) return mostrarError('Marca la casilla para confirmar que entiendes que es una simulación.');
 
-    const plan = PLANES.find(p => p.id === planId);
-    const codigo = 'SIM-' + Math.random().toString(36).slice(2, 8).toUpperCase();
-    const membresia = {
-      plan: planId, apodo, perfilId, vivienda, codigo,
-      precio: plan.precio, fecha: new Date().toISOString()
-    };
-    if (!Recrea.guardarMembresia(membresia)) {
+    const usuario = Recrea.crearUsuario({ apodo, perfilId, vivienda, plan: planId });
+    if (!usuario) {
       return mostrarError('Tu navegador no permite guardar datos (¿modo privado?). Prueba en una ventana normal.');
     }
-    mostrarConfirmacion(membresia, plan);
+    mostrarConfirmacion(usuario);
   });
 
   /* ---------- Confirmación ---------- */
-  function mostrarConfirmacion(m, plan) {
+  function mostrarConfirmacion(u) {
+    const plan = PLANES.find(p => p.id === u.plan);
     vistaForm.hidden = true;
     vistaConf.hidden = false;
-    document.getElementById('confTitulo').textContent = '¡Bienvenido/a, ' + m.apodo + '!';
-    document.getElementById('confTexto').textContent =
-      'Quedaste inscrito/a en ' + plan.nombre + ' de forma simulada. Tu primer plan mensual ya está listo en "Mi cuenta".';
+    document.getElementById('confTitulo').textContent = '¡Bienvenido/a, ' + u.apodo + '!';
+    document.getElementById('confTexto').textContent = plan.precio === 0
+      ? 'Tu cuenta simulada con el plan Gratis está lista. Puedes pasar a Plus cuando quieras desde "Mi cuenta".'
+      : 'Tu cuenta simulada con ' + plan.nombre + ' está lista. Tu primer plan mensual ya te espera en "Mi cuenta".';
     const dl = document.getElementById('confResumen');
     dl.textContent = '';
-    const filas = [
+    [
       ['Plan', plan.nombre],
-      ['Monto (ficticio)', formatoCLP(plan.precio) + ' ' + plan.periodo],
-      ['Perfil', PERFILES_PLUS[m.perfilId].nombre],
-      ['Código de simulación', m.codigo],
-      ['Fecha', new Date(m.fecha).toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' })]
-    ];
-    filas.forEach(([k, v]) => { dl.append(el('dt', '', k), el('dd', '', v)); });
+      ['Monto (ficticio)', plan.precio === 0 ? 'Gratis' : formatoCLP(plan.precio) + ' ' + plan.periodo],
+      ['Perfil', PERFILES_PLUS[u.perfilId].nombre],
+      ['Código de simulación', u.codigo],
+      ['Fecha', new Date(u.fecha).toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' })]
+    ].forEach(([k, v]) => dl.append(el('dt', '', k), el('dd', '', v)));
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 })();

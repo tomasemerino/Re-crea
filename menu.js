@@ -2,6 +2,7 @@
    Re-crea · menu.js
    - Abre y cierra el menú en celulares
    - Marca la página actual en el menú
+   - Muestra la cuenta con sesión iniciada
    - Registra el "service worker" que permite instalar el sitio como app
    ========================================================== */
 (function () {
@@ -21,6 +22,20 @@
       const destino = a.getAttribute('href').split('#')[0];
       if (destino && destino === actual && !a.getAttribute('href').includes('#')) a.setAttribute('aria-current', 'page');
     });
+  }
+
+  // Mostrar quién tiene la sesión iniciada (si hay una)
+  if (menu && typeof Recrea !== 'undefined') {
+    const u = Recrea.usuarioActivo();
+    const enlaceCuenta = menu.querySelector('a[href="miembros.html"]');
+    if (u && enlaceCuenta) {
+      const plus = Recrea.esPlus(u);
+      enlaceCuenta.textContent = u.apodo + ' ';
+      const ins = document.createElement('span');
+      ins.className = 'insignia' + (plus ? ' insignia--plus' : '');
+      ins.textContent = plus ? 'Plus' : 'Gratis';
+      enlaceCuenta.append(ins);
+    }
   }
 
   // App instalable: solo funciona en http(s), no abriendo el archivo directamente

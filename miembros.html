@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mi cuenta | Re-crea</title>
-  <meta name="description" content="Tu área de miembros de Re-crea Plus: plan del mes según tu perfil y seguimiento de avance. Simulación académica.">
+  <meta name="description" content="Tu cuenta simulada de Re-crea: plan del mes según tu perfil y seguimiento de avance. Demostración académica.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -32,20 +32,44 @@
     </div>
   </header>
   <div class="banner-sim" role="note">
-    <strong>Proyecto académico.</strong> Esto es una simulación: no se realiza ningún cobro ni se pide información de pago.
+    <strong>Proyecto académico.</strong> Esto es una simulación: las cuentas no son reales, no se realiza ningún cobro ni se pide información de pago.
   </div>
 
   <main id="contenido">
-    <!-- Sin suscripción -->
-    <section class="seccion" id="vistaSinCuenta" hidden>
-      <div class="contenedor contenedor--angosto texto-centro">
-        <h1 class="titulo-pagina">Aún no tienes un plan Plus</h1>
-        <p class="seccion__intro" style="margin-inline:auto">Inscríbete (en simulación) para ver tu plan mensual personalizado y registrar tu avance.</p>
-        <a href="planes.html" class="boton boton--primario">Ver planes</a>
-      </div>
-    </section>
 
-    <!-- Con suscripción -->
+    <!-- ========== Sin sesión: entrar o crear cuenta ========== -->
+    <div id="vistaAcceso" hidden>
+      <section class="hero hero--chico">
+        <div class="contenedor">
+          <p class="etiqueta">Mi cuenta</p>
+          <h1>Entra o crea tu cuenta</h1>
+          <p class="hero__bajada">Es una demostración: las cuentas viven solo en este navegador y no hay contraseñas.</p>
+        </div>
+      </section>
+
+      <section class="seccion seccion--corta">
+        <div class="contenedor">
+          <div id="cuentasGuardadas" hidden>
+            <h2 class="h-chico">Tus cuentas en este navegador</h2>
+            <div class="grilla grilla--3" id="listaGuardadas"></div>
+          </div>
+
+          <h2 class="h-chico">Entra con un usuario de ejemplo</h2>
+          <p class="seccion__intro">Mira cómo se ve cada plan ya en uso, sin crear nada.</p>
+          <div class="grilla grilla--3" id="listaEjemplos"></div>
+
+          <div class="cta-plus">
+            <div>
+              <h3>¿Prefieres crear la tuya?</h3>
+              <p>Elige un plan (Gratis o Plus), pon un apodo y listo.</p>
+            </div>
+            <a href="inscripcion.html" class="boton boton--primario">Crear cuenta</a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ========== Con sesión ========== -->
     <div id="vistaCuenta" hidden>
       <section class="hero hero--chico">
         <div class="contenedor">
@@ -57,39 +81,66 @@
 
       <section class="seccion seccion--corta">
         <div class="contenedor contenedor--medio">
-          <div class="tabs" role="tablist" aria-label="Meses" id="mesTabs"></div>
 
-          <article class="tarjeta plan-mes" id="planMes">
-            <header>
-              <p class="plan-mes__mes" id="planMesNumero"></p>
-              <h2 id="planMesTitulo"></h2>
-            </header>
+          <div id="avisoPerfil" class="perfil-aviso" hidden></div>
 
-            <div class="progreso" aria-live="polite">
-              <div class="progreso__barra"><div class="progreso__relleno" id="progresoRelleno"></div></div>
-              <p class="progreso__texto" id="progresoTexto"></p>
-            </div>
+          <!-- Plan Plus: plan completo -->
+          <div id="bloquePlus" hidden>
+            <div class="tabs" role="tablist" aria-label="Meses" id="mesTabs"></div>
+            <article class="tarjeta plan-mes">
+              <header>
+                <p class="plan-mes__mes" id="planMesNumero"></p>
+                <h2 id="planMesTitulo"></h2>
+              </header>
+              <div class="progreso" aria-live="polite">
+                <div class="progreso__barra"><div class="progreso__relleno" id="progresoRelleno"></div></div>
+                <p class="progreso__texto" id="progresoTexto"></p>
+              </div>
+              <h3>Por qué importa</h3>
+              <p id="planPorque"></p>
+              <h3>Tu lista de tareas</h3>
+              <ul class="tareas" id="planTareas"></ul>
+              <div class="consejos-vivienda">
+                <div class="consejo-v"><h4 id="viviendaTitulo"></h4><p id="viviendaTexto"></p></div>
+                <div class="consejo-v consejo-v--eco"><h4>Mirada de economía</h4><p id="economiaTexto"></p></div>
+              </div>
+            </article>
+            <p class="nota nota--centro">Simulación: en un servicio real, cada mes se desbloquearía a los 30 días. Aquí puedes ver los 3 meses de ejemplo.</p>
+          </div>
 
-            <h3>Por qué importa</h3>
-            <p id="planPorque"></p>
+          <!-- Plan Gratis: vista previa bloqueada -->
+          <div id="bloqueGratis" hidden>
+            <article class="tarjeta plan-mes plan-mes--bloqueado">
+              <header>
+                <p class="plan-mes__mes">Vista previa · Mes 1 <span class="insignia insignia--plus">Plus</span></p>
+                <h2 id="previaTitulo"></h2>
+              </header>
+              <p id="previaPorque"></p>
+              <div class="candado" role="note">
+                <p><strong>Tu lista de tareas, los consejos para tu vivienda y el seguimiento de avance son parte de Re-crea Plus.</strong></p>
+                <p>Con tu plan Gratis tienes el cuestionario, la guía de contenedores y el muro de opiniones.</p>
+                <a class="boton boton--primario" href="#cambiar-plan" id="btnSubir">Pasar a Plus (simulado)</a>
+              </div>
+            </article>
+          </div>
 
-            <h3>Tu lista de tareas</h3>
-            <ul class="tareas" id="planTareas"></ul>
+          <!-- Datos de la cuenta y cambio de plan -->
+          <div class="tarjeta tarjeta--nota" id="cambiar-plan">
+            <h3>Tu cuenta (simulada)</h3>
+            <dl class="resumen" id="cuentaResumen"></dl>
 
-            <div class="consejos-vivienda">
-              <div class="consejo-v"><h4 id="viviendaTitulo"></h4><p id="viviendaTexto"></p></div>
-              <div class="consejo-v consejo-v--eco"><h4>Mirada de economía</h4><p id="economiaTexto"></p></div>
-            </div>
-          </article>
-
-          <p class="nota nota--centro" id="notaSim">Simulación: en un servicio real, cada mes se desbloquearía automáticamente a los 30 días. Aquí puedes ver los 3 meses de ejemplo.</p>
+            <h3>Cambiar de plan</h3>
+            <div id="opcionesCambio" class="opciones-plan"></div>
+            <button type="button" class="boton boton--primario" id="btnCambiar">Aplicar cambio (simulado)</button>
+            <p class="estado" id="estadoCambio" role="status"></p>
+          </div>
 
           <div class="tarjeta tarjeta--nota">
-            <h3>Tu suscripción (simulada)</h3>
-            <dl class="resumen" id="cuentaResumen"></dl>
+            <h3>Sesión y cuenta</h3>
             <div class="acciones-fila">
-              <button type="button" class="boton boton--secundario" id="btnCancelar">Cancelar suscripción</button>
+              <button type="button" class="boton boton--secundario" id="btnSalir">Cerrar sesión</button>
               <a href="index.html#cuestionario" class="boton boton--secundario">Rehacer el cuestionario</a>
+              <button type="button" class="boton boton--secundario boton--peligro" id="btnEliminar">Eliminar cuenta</button>
             </div>
             <p class="estado" id="estadoCuenta" role="status"></p>
           </div>
@@ -106,7 +157,7 @@
   <footer class="pie">
     <div class="contenedor pie__fila">
       <img src="img/logo.png" alt="Re-crea" class="pie__logo">
-      <p>Proyecto formativo de estudiantes de tercero medio, electivo de Economía.<br>Liceo 7 Luisa Saavedra · Providencia, Chile.<br><a href="modelo.html">Modelo de negocio (proyecto académico)</a></p>
+      <p>Proyecto formativo de estudiantes de tercero medio, electivo de Economía.<br>Liceo 7 Luisa Saavedra · Providencia, Chile.</p>
     </div>
   </footer>
 

@@ -195,7 +195,7 @@ form textarea { resize: vertical; }
 .compartir__botones [hidden] { display: none; }
 
 /* ==========================================================
-   VERSIÓN 2 · Planes, inscripción simulada, mi cuenta y modelo
+   VERSIÓN 2 y 3 · Planes, cuentas simuladas y mi cuenta
    ========================================================== */
 :root { --serie-1: #2a78d6; --serie-2: #eb6834; --aviso-fondo: #fff6dc; --aviso-borde: #ecd68b; }
 
@@ -301,51 +301,11 @@ form input[type=number]:focus { border-color: var(--verde); outline: none; }
 .cta-plus h3 { margin-bottom: 4px; color: var(--verde-oscuro); }
 .cta-plus p { margin: 0; font-size: .95rem; }
 
-/* Modelo de negocio */
-.modelo-layout { display: grid; grid-template-columns: 320px 1fr; gap: 24px; align-items: start; }
-.modelo-resultados { display: grid; gap: 20px; min-width: 0; }
-.kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-.kpi { background: var(--blanco); border: 1px solid var(--linea); border-radius: 12px; padding: 14px 16px; }
-.kpi p { margin: 0; }
-.kpi__titulo { font-size: .8rem; font-weight: 700; color: var(--tinta-suave); text-transform: uppercase; letter-spacing: .03em; }
-.kpi__valor { font-size: 1.5rem; font-weight: 800; color: var(--tinta); line-height: 1.3; }
-.kpi__nota { font-size: .82rem; color: var(--tinta-suave); }
-.grafico { position: relative; width: 100%; }
-.grafico svg { display: block; overflow: visible; }
-.g-grid { stroke: #e6ebde; stroke-width: 1; }
-.g-eje { font-size: 12px; fill: var(--tinta-suave); font-family: var(--fuente); }
-.g-linea { fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.g-linea--ingresos { stroke: var(--serie-1); }
-.g-linea--costos { stroke: var(--serie-2); }
-.g-punto { stroke: var(--blanco); stroke-width: 2; }
-.g-punto--ingresos { fill: var(--serie-1); }
-.g-punto--costos { fill: var(--serie-2); }
-.g-guia { stroke: var(--tinta-suave); stroke-width: 1; }
-.g-tooltip { position: absolute; z-index: 5; background: var(--blanco); border: 1px solid var(--linea); border-radius: 10px; box-shadow: var(--sombra); padding: 8px 12px; font-size: .85rem; pointer-events: none; min-width: 190px; }
-.g-tooltip__fila { display: grid; grid-template-columns: 12px 1fr auto; gap: 8px; align-items: center; margin-top: 3px; }
-.g-marca { display: inline-block; width: 12px; height: 3px; border-radius: 2px; background: var(--tinta-suave); }
-.g-marca--ingresos { background: var(--serie-1); }
-.g-marca--costos { background: var(--serie-2); }
-.g-marca--utilidad { background: transparent; border: 1px solid var(--tinta-suave); height: 8px; width: 8px; border-radius: 50%; }
-.leyenda { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 10px; font-size: .9rem; color: var(--tinta-suave); }
-.leyenda__item { display: inline-flex; align-items: center; gap: 8px; }
-.tabla-detalle { margin-top: 14px; }
-.tabla-detalle summary { cursor: pointer; font-weight: 700; color: var(--verde-oscuro); }
-.tabla-scroll { overflow-x: auto; margin-top: 10px; }
-.tabla-scroll table { width: 100%; border-collapse: collapse; font-size: .88rem; }
-.tabla-scroll th, .tabla-scroll td { padding: 7px 10px; border-bottom: 1px solid var(--linea); text-align: left; white-space: nowrap; }
-.tabla-scroll th { font-size: .78rem; text-transform: uppercase; color: var(--tinta-suave); }
-.tabla-scroll .num, .num { font-variant-numeric: tabular-nums; text-align: right; }
-.lista-simple { padding-left: 20px; margin: 0 0 12px; }
-.lista-simple li { margin-bottom: 8px; }
-
 @media (max-width: 900px) {
   .pasos-lista { grid-template-columns: repeat(2, 1fr); }
-  .modelo-layout { grid-template-columns: 1fr; }
-  .kpis { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 720px) {
-  .pasos-lista, .consejos-vivienda, .kpis { grid-template-columns: 1fr; }
+  .pasos-lista, .consejos-vivienda { grid-template-columns: 1fr; }
   .resumen { grid-template-columns: 1fr; }
   .resumen dt { margin-top: 6px; }
   .menu__destacado { text-align: center; }
@@ -355,3 +315,25 @@ form input[type=number]:focus { border-color: var(--verde); outline: none; }
 .menu a.menu__destacado[aria-current="page"] { background: var(--verde-oscuro); color: #fff; }
 .pie a { color: #cfe5b4; }
 .pie a:hover { color: #fff; }
+
+
+/* ==========================================================
+   VERSIÓN 3 · Cuentas de usuario simuladas
+   ========================================================== */
+.insignia { display: inline-block; font-size: .72rem; font-weight: 800; letter-spacing: .03em; text-transform: uppercase; padding: 1px 8px; border-radius: 999px; background: #e6eadf; color: var(--tinta-suave); vertical-align: middle; }
+.insignia--plus { background: var(--verde); color: #fff; }
+.menu a .insignia { margin-left: 2px; }
+.usuario-nombre { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.plan--actual { border-color: var(--verde-oscuro); box-shadow: 0 0 0 3px var(--verde-claro); }
+.boton--inactivo { opacity: .65; cursor: default; pointer-events: none; }
+.boton--peligro { color: var(--error); border-color: var(--error); }
+.boton--peligro:hover { background: #fdecea; }
+.plan-mes--bloqueado { border-style: dashed; }
+.candado { margin-top: 18px; background: var(--fondo-suave); border: 1px solid var(--linea); border-left: 5px solid var(--verde); border-radius: 12px; padding: 16px 20px; }
+.candado p:last-of-type { margin-bottom: 14px; }
+.perfil-aviso .acciones-fila { margin-top: 0; }
+.opciones-plan + .boton, .tarjeta--nota .opciones-plan { margin-bottom: 14px; }
+
+/* Los elementos con el atributo "hidden" deben quedar realmente ocultos */
+[hidden] { display: none !important; }
+#cuentasGuardadas { margin-bottom: 36px; }

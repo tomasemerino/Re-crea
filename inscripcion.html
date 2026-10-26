@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inscripción simulada | Re-crea</title>
-  <meta name="description" content="Simulación de inscripción a Re-crea Plus. Proyecto académico: no se realiza ningún cobro.">
+  <title>Crear cuenta | Re-crea</title>
+  <meta name="description" content="Crea una cuenta simulada de Re-crea y elige tu plan. Proyecto académico: no se realiza ningún cobro.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -32,17 +32,16 @@
     </div>
   </header>
   <div class="banner-sim" role="note">
-    <strong>Proyecto académico.</strong> Esto es una simulación: no se realiza ningún cobro ni se pide información de pago.
+    <strong>Proyecto académico.</strong> Esto es una simulación: las cuentas no son reales, no se realiza ningún cobro ni se pide información de pago.
   </div>
 
   <main id="contenido">
     <section class="seccion">
       <div class="contenedor contenedor--angosto">
 
-        <!-- PASO 1: formulario -->
         <div id="vistaFormulario">
-          <h1 class="titulo-pagina">Inscripción a Re-crea Plus</h1>
-          <p class="seccion__intro">Completa los datos para continuar. Es una simulación: <strong>no escribas datos reales</strong> (ni apellido, correo, teléfono ni tarjeta).</p>
+          <h1 class="titulo-pagina">Crea tu cuenta de Re-crea</h1>
+          <p class="seccion__intro">Completa los datos para continuar. Es una simulación: <strong>no escribas datos reales</strong> (ni apellido, correo, teléfono ni tarjeta). No hay contraseña.</p>
 
           <form class="tarjeta" id="formInscripcion" novalidate>
             <fieldset class="campo-grupo">
@@ -65,31 +64,30 @@
             <div class="aviso aviso--sim">
               <label class="check">
                 <input type="checkbox" id="acepto" required>
-                <span>Entiendo que esto es una <strong>simulación académica</strong>: no se realiza ningún cobro y no se entregan datos de pago.</span>
+                <span>Entiendo que esto es una <strong>simulación académica</strong>: la cuenta no es real, no se realiza ningún cobro y no se entregan datos de pago.</span>
               </label>
             </div>
 
             <p class="estado" id="estadoForm" role="status"></p>
-            <button type="submit" class="boton boton--primario boton--ancho">Simular inscripción</button>
+            <button type="submit" class="boton boton--primario boton--ancho">Crear cuenta simulada</button>
           </form>
 
           <div class="tarjeta tarjeta--nota">
             <h3>¿Qué pasaría en la vida real?</h3>
-            <p>En un servicio real, aquí iría una <strong>pasarela de pago</strong> (por ejemplo Webpay, Mercado Pago o Stripe) que procesa la tarjeta en un sitio seguro de la empresa de pagos, <em>no</em> en la página del negocio. Además se enviaría un correo de bienvenida y se crearía una cuenta con contraseña. Re-crea no hace nada de eso: solo muestra cómo sería el recorrido.</p>
+            <p>En un servicio real, la cuenta se crearía con correo y contraseña en un servidor seguro, y el pago lo procesaría una <strong>pasarela de pago</strong> (por ejemplo Webpay, Mercado Pago o Stripe) en su propio sitio, <em>no</em> en la página del negocio. Re-crea no hace nada de eso: solo muestra cómo sería el recorrido.</p>
           </div>
         </div>
 
-        <!-- PASO 2: confirmación -->
         <div id="vistaConfirmacion" hidden>
           <div class="confirmacion">
-            <p class="etiqueta">Inscripción simulada completada</p>
+            <p class="etiqueta">Cuenta simulada creada</p>
             <h1 class="titulo-pagina" id="confTitulo">¡Bienvenido/a!</h1>
             <p id="confTexto"></p>
           </div>
           <div class="tarjeta">
-            <h3>Resumen de la simulación</h3>
+            <h3>Resumen</h3>
             <dl class="resumen" id="confResumen"></dl>
-            <p class="nota">Ningún cobro fue realizado. El resumen solo existe en este navegador.</p>
+            <p class="nota">Ningún cobro fue realizado. Esta cuenta solo existe en este navegador.</p>
           </div>
           <div class="acciones-centro">
             <a href="miembros.html" class="boton boton--primario">Ir a Mi cuenta</a>
@@ -104,7 +102,7 @@
   <footer class="pie">
     <div class="contenedor pie__fila">
       <img src="img/logo.png" alt="Re-crea" class="pie__logo">
-      <p>Proyecto formativo de estudiantes de tercero medio, electivo de Economía.<br>Liceo 7 Luisa Saavedra · Providencia, Chile.<br><a href="modelo.html">Modelo de negocio (proyecto académico)</a></p>
+      <p>Proyecto formativo de estudiantes de tercero medio, electivo de Economía.<br>Liceo 7 Luisa Saavedra · Providencia, Chile.</p>
     </div>
   </footer>
 
