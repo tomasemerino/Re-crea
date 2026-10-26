@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscripción simulada | Re-crea</title>
+  <meta name="description" content="Simulación de inscripción a Re-crea Plus. Proyecto académico: no se realiza ningún cobro.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#528827">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+  <header class="encabezado">
+    <div class="contenedor encabezado__fila">
+      <a href="index.html" class="marca" aria-label="Re-crea, ir al inicio">
+        <img src="img/logo.png" alt="Logotipo Re-crea" class="marca__logo">
+      </a>
+      <button class="menu-boton" id="menuBoton" aria-expanded="false" aria-controls="menu">Menú</button>
+      <nav class="menu" id="menu" aria-label="Principal">
+        <a href="index.html#proyecto">El proyecto</a>
+        <a href="index.html#cuestionario">Cuestionario</a>
+        <a href="index.html#contenedores">¿Qué va dónde?</a>
+        <a href="index.html#opiniones">Opiniones</a>
+        <a href="planes.html" class="menu__destacado">Planes Plus</a>
+        <a href="miembros.html">Mi cuenta</a>
+      </nav>
+    </div>
+  </header>
+  <div class="banner-sim" role="note">
+    <strong>Proyecto académico.</strong> Esto es una simulación: no se realiza ningún cobro ni se pide información de pago.
+  </div>
+
+  <main id="contenido">
+    <section class="seccion">
+      <div class="contenedor contenedor--angosto">
+
+        <!-- PASO 1: formulario -->
+        <div id="vistaFormulario">
+          <h1 class="titulo-pagina">Inscripción a Re-crea Plus</h1>
+          <p class="seccion__intro">Completa los datos para continuar. Es una simulación: <strong>no escribas datos reales</strong> (ni apellido, correo, teléfono ni tarjeta).</p>
+
+          <form class="tarjeta" id="formInscripcion" novalidate>
+            <fieldset class="campo-grupo">
+              <legend>1. Elige tu plan</legend>
+              <div id="opcionesPlan" class="opciones-plan"></div>
+            </fieldset>
+
+            <fieldset class="campo-grupo">
+              <legend>2. Tu nombre o apodo</legend>
+              <label for="apodo" class="sr-only">Nombre o apodo</label>
+              <input type="text" id="apodo" maxlength="30" placeholder="Ej: Camila" autocomplete="off" required>
+              <p class="ayuda">Solo un nombre o apodo. No uses correos ni números de teléfono.</p>
+            </fieldset>
+
+            <fieldset class="campo-grupo" id="grupoPerfil">
+              <legend>3. Tu perfil</legend>
+              <div id="perfilDetectado"></div>
+            </fieldset>
+
+            <div class="aviso aviso--sim">
+              <label class="check">
+                <input type="checkbox" id="acepto" required>
+                <span>Entiendo que esto es una <strong>simulación académica</strong>: no se realiza ningún cobro y no se entregan datos de pago.</span>
+              </label>
+            </div>
+
+            <p class="estado" id="estadoForm" role="status"></p>
+            <button type="submit" class="boton boton--primario boton--ancho">Simular inscripción</button>
+          </form>
+
+          <div class="tarjeta tarjeta--nota">
+            <h3>¿Qué pasaría en la vida real?</h3>
+            <p>En un servicio real, aquí iría una <strong>pasarela de pago</strong> (por ejemplo Webpay, Mercado Pago o Stripe) que procesa la tarjeta en un sitio seguro de la empresa de pagos, <em>no</em> en la página del negocio. Además se enviaría un correo de bienvenida y se crearía una cuenta con contraseña. Re-crea no hace nada de eso: solo muestra cómo sería el recorrido.</p>
+          </div>
+        </div>
+
+        <!-- PASO 2: confirmación -->
+        <div id="vistaConfirmacion" hidden>
+          <div class="confirmacion">
+            <p class="etiqueta">Inscripción simulada completada</p>
+            <h1 class="titulo-pagina" id="confTitulo">¡Bienvenido/a!</h1>
+            <p id="confTexto"></p>
+          </div>
+          <div class="tarjeta">
+            <h3>Resumen de la simulación</h3>
+            <dl class="resumen" id="confResumen"></dl>
+            <p class="nota">Ningún cobro fue realizado. El resumen solo existe en este navegador.</p>
+          </div>
+          <div class="acciones-centro">
+            <a href="miembros.html" class="boton boton--primario">Ir a Mi cuenta</a>
+            <a href="planes.html" class="boton boton--secundario">Volver a los planes</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor pie__fila">
+      <img src="img/logo.png" alt="Re-crea" class="pie__logo">
+      <p>Proyecto formativo de estudiantes de tercero medio, electivo de Economía.<br>Liceo 7 Luisa Saavedra · Providencia, Chile.<br><a href="modelo.html">Modelo de negocio (proyecto académico)</a></p>
+    </div>
+  </footer>
+
+  <script src="js/estado.js"></script>
+  <script src="js/planes-data.js"></script>
+  <script src="js/inscripcion.js"></script>
+  <script src="js/menu.js"></script>
+</body>
+</html>

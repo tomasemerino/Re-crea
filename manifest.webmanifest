@@ -1,0 +1,16 @@
+{
+  "name": "Re-crea",
+  "short_name": "Re-crea",
+  "description": "Plan mensual de reciclaje y consumo responsable (proyecto académico).",
+  "lang": "es-CL",
+  "start_url": "miembros.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fbfcf8",
+  "theme_color": "#528827",
+  "icons": [
+    { "src": "img/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "img/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

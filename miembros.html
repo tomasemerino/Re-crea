@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi cuenta | Re-crea</title>
+  <meta name="description" content="Tu área de miembros de Re-crea Plus: plan del mes según tu perfil y seguimiento de avance. Simulación académica.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#528827">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+  <header class="encabezado">
+    <div class="contenedor encabezado__fila">
+      <a href="index.html" class="marca" aria-label="Re-crea, ir al inicio">
+        <img src="img/logo.png" alt="Logotipo Re-crea" class="marca__logo">
+      </a>
+      <button class="menu-boton" id="menuBoton" aria-expanded="false" aria-controls="menu">Menú</button>
+      <nav class="menu" id="menu" aria-label="Principal">
+        <a href="index.html#proyecto">El proyecto</a>
+        <a href="index.html#cuestionario">Cuestionario</a>
+        <a href="index.html#contenedores">¿Qué va dónde?</a>
+        <a href="index.html#opiniones">Opiniones</a>
+        <a href="planes.html" class="menu__destacado">Planes Plus</a>
+        <a href="miembros.html">Mi cuenta</a>
+      </nav>
+    </div>
+  </header>
+  <div class="banner-sim" role="note">
+    <strong>Proyecto académico.</strong> Esto es una simulación: no se realiza ningún cobro ni se pide información de pago.
+  </div>
+
+  <main id="contenido">
+    <!-- Sin suscripción -->
+    <section class="seccion" id="vistaSinCuenta" hidden>
+      <div class="contenedor contenedor--angosto texto-centro">
+        <h1 class="titulo-pagina">Aún no tienes un plan Plus</h1>
+        <p class="seccion__intro" style="margin-inline:auto">Inscríbete (en simulación) para ver tu plan mensual personalizado y registrar tu avance.</p>
+        <a href="planes.html" class="boton boton--primario">Ver planes</a>
+      </div>
+    </section>
+
+    <!-- Con suscripción -->
+    <div id="vistaCuenta" hidden>
+      <section class="hero hero--chico">
+        <div class="contenedor">
+          <p class="etiqueta" id="cuentaEtiqueta"></p>
+          <h1 id="cuentaSaludo"></h1>
+          <p class="hero__bajada" id="cuentaPerfil"></p>
+        </div>
+      </section>
+
+      <section class="seccion seccion--corta">
+        <div class="contenedor contenedor--medio">
+          <div class="tabs" role="tablist" aria-label="Meses" id="mesTabs"></div>
+
+          <article class="tarjeta plan-mes" id="planMes">
+            <header>
+              <p class="plan-mes__mes" id="planMesNumero"></p>
+              <h2 id="planMesTitulo"></h2>
+            </header>
+
+            <div class="progreso" aria-live="polite">
+              <div class="progreso__barra"><div class="progreso__relleno" id="progresoRelleno"></div></div>
+              <p class="progreso__texto" id="progresoTexto"></p>
+            </div>
+
+            <h3>Por qué importa</h3>
+            <p id="planPorque"></p>
+
+            <h3>Tu lista de tareas</h3>
+            <ul class="tareas" id="planTareas"></ul>
+
+            <div class="consejos-vivienda">
+              <div class="consejo-v"><h4 id="viviendaTitulo"></h4><p id="viviendaTexto"></p></div>
+              <div class="consejo-v consejo-v--eco"><h4>Mirada de economía</h4><p id="economiaTexto"></p></div>
+            </div>
+          </article>
+
+          <p class="nota nota--centro" id="notaSim">Simulación: en un servicio real, cada mes se desbloquearía automáticamente a los 30 días. Aquí puedes ver los 3 meses de ejemplo.</p>
+
+          <div class="tarjeta tarjeta--nota">
+            <h3>Tu suscripción (simulada)</h3>
+            <dl class="resumen" id="cuentaResumen"></dl>
+            <div class="acciones-fila">
+              <button type="button" class="boton boton--secundario" id="btnCancelar">Cancelar suscripción</button>
+              <a href="index.html#cuestionario" class="boton boton--secundario">Rehacer el cuestionario</a>
+            </div>
+            <p class="estado" id="estadoCuenta" role="status"></p>
+          </div>
+
+          <div class="tarjeta tarjeta--nota">
+            <h3>Instálala como app</h3>
+            <p>En el celular, abre el menú de tu navegador y elige <strong>"Agregar a la pantalla de inicio"</strong> o <strong>"Instalar app"</strong>. Re-crea se abrirá como una aplicación, sin barra del navegador.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor pie__fila">
+      <img src="img/logo.png" alt="Re-crea" class="pie__logo">
+      <p>Proyecto formativo de estudiantes de tercero medio, electivo de Economía.<br>Liceo 7 Luisa Saavedra · Providencia, Chile.<br><a href="modelo.html">Modelo de negocio (proyecto académico)</a></p>
+    </div>
+  </footer>
+
+  <script src="js/estado.js"></script>
+  <script src="js/planes-data.js"></script>
+  <script src="js/miembros.js"></script>
+  <script src="js/menu.js"></script>
+</body>
+</html>

@@ -12,6 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="icon" type="image/png" href="img/favicon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#528827">
   <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
@@ -28,9 +30,11 @@
       <nav class="menu" id="menu" aria-label="Principal">
         <a href="#proyecto">El proyecto</a>
         <a href="#cuestionario">Cuestionario</a>
-        <a href="#contenedores">¿Dónde reciclo?</a>
+        <a href="#contenedores">¿Qué va dónde?</a>
         <a href="#puntos">Dónde reciclar</a>
         <a href="#opiniones">Opiniones</a>
+        <a href="planes.html" class="menu__destacado">Planes Plus</a>
+        <a href="miembros.html">Mi cuenta</a>
       </nav>
     </div>
   </header>
@@ -212,24 +216,14 @@
   <footer class="pie">
     <div class="contenedor pie__fila">
       <img src="img/logo.png" alt="Re-crea" class="pie__logo">
-      <p>Proyecto formativo de estudiantes de tercero medio, electivo de Economía.<br>Liceo 7 Luisa Saavedra · Providencia, Chile.</p>
+      <p>Proyecto formativo de estudiantes de tercero medio, electivo de Economía.<br>Liceo 7 Luisa Saavedra · Providencia, Chile.<br><a href="modelo.html">Modelo de negocio (proyecto académico)</a></p>
     </div>
   </footer>
 
+  <script src="js/estado.js"></script>
   <script src="js/cuestionario.js"></script>
   <!-- opiniones.js es un "módulo" porque usa Firebase -->
   <script type="module" src="js/opiniones.js"></script>
-  <script>
-    // Menú para celulares
-    const boton = document.getElementById('menuBoton');
-    const menu = document.getElementById('menu');
-    boton.addEventListener('click', () => {
-      const abierto = menu.classList.toggle('menu--abierto');
-      boton.setAttribute('aria-expanded', abierto);
-    });
-    menu.addEventListener('click', e => {
-      if (e.target.tagName === 'A') { menu.classList.remove('menu--abierto'); boton.setAttribute('aria-expanded', false); }
-    });
-  </script>
+  <script src="js/menu.js"></script>
 </body>
 </html>
