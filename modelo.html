@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modelo de negocio | Re-crea</title>
+  <meta name="description" content="Simulador del modelo de negocio de Re-crea Plus: ingresos, costos, punto de equilibrio y proyección a 12 meses. Proyecto académico.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#528827">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+  <header class="encabezado">
+    <div class="contenedor encabezado__fila">
+      <a href="index.html" class="marca" aria-label="Re-crea, ir al inicio">
+        <img src="img/logo.png" alt="Logotipo Re-crea" class="marca__logo">
+      </a>
+      <button class="menu-boton" id="menuBoton" aria-expanded="false" aria-controls="menu">Menú</button>
+      <nav class="menu" id="menu" aria-label="Principal">
+        <a href="index.html#proyecto">El proyecto</a>
+        <a href="index.html#cuestionario">Cuestionario</a>
+        <a href="index.html#contenedores">¿Qué va dónde?</a>
+        <a href="index.html#opiniones">Opiniones</a>
+        <a href="planes.html" class="menu__destacado">Planes Plus</a>
+        <a href="miembros.html">Mi cuenta</a>
+      </nav>
+    </div>
+  </header>
+  <div class="banner-sim" role="note">
+    <strong>Proyecto académico.</strong> Esto es una simulación: no se realiza ningún cobro ni se pide información de pago.
+  </div>
+
+  <main id="contenido">
+    <section class="hero hero--chico">
+      <div class="contenedor">
+        <p class="etiqueta">Electivo de Economía</p>
+        <h1>Modelo de negocio de Re-crea Plus</h1>
+        <p class="hero__bajada">Cambia los supuestos y mira cómo se mueven los ingresos, los costos y el punto de equilibrio durante el primer año. Los valores iniciales son ejemplos: el trabajo del grupo es justificarlos.</p>
+      </div>
+    </section>
+
+    <section class="seccion seccion--corta">
+      <div class="contenedor">
+        <div class="modelo-layout">
+
+          <form class="tarjeta" id="supuestos" aria-labelledby="supTitulo" onsubmit="return false">
+            <h2 id="supTitulo" class="h-chico">Supuestos</h2>
+
+            <label for="precio">Precio mensual por cliente (CLP)</label>
+            <input type="number" id="precio" min="0" step="10" inputmode="numeric">
+
+            <label for="nuevosIni">Clientes nuevos en el mes 1</label>
+            <input type="number" id="nuevosIni" min="0" step="1" inputmode="numeric">
+
+            <label for="crecimiento">Crecimiento mensual de clientes nuevos (%)</label>
+            <input type="number" id="crecimiento" min="-50" max="100" step="1" inputmode="numeric">
+
+            <label for="cancelacion">Clientes que cancelan cada mes (%)</label>
+            <input type="number" id="cancelacion" min="0" max="100" step="1" inputmode="numeric">
+
+            <label for="costoVar">Costo variable por cliente al mes (CLP)</label>
+            <input type="number" id="costoVar" min="0" step="10" inputmode="numeric">
+
+            <label for="cac">Costo de conseguir un cliente nuevo (CLP)</label>
+            <input type="number" id="cac" min="0" step="100" inputmode="numeric">
+
+            <label for="costoFijo">Costos fijos al mes (CLP)</label>
+            <input type="number" id="costoFijo" min="0" step="1000" inputmode="numeric">
+
+            <button type="button" class="boton boton--secundario boton--ancho" id="btnReset">Volver a los valores de ejemplo</button>
+          </form>
+
+          <div class="modelo-resultados">
+            <div class="kpis" id="kpis"></div>
+
+            <div class="tarjeta">
+              <h2 class="h-chico" id="grafTitulo">Ingresos y costos totales por mes</h2>
+              <p class="nota" id="grafBajada"></p>
+              <div class="grafico" id="grafico" role="img" aria-labelledby="grafTitulo grafBajada"></div>
+              <div class="leyenda" id="leyenda"></div>
+              <details class="tabla-detalle">
+                <summary>Ver tabla de datos</summary>
+                <div class="tabla-scroll"><table id="tablaMeses"></table></div>
+              </details>
+            </div>
+
+            <div class="tarjeta tarjeta--nota">
+              <h2 class="h-chico">Cómo leer estos números</h2>
+              <ul class="lista-simple">
+                <li><strong>Punto de equilibrio:</strong> cuántos clientes se necesitan para cubrir los costos fijos. Se calcula como costos fijos ÷ (precio − costo variable por cliente).</li>
+                <li><strong>Valor de un cliente (LTV):</strong> lo que un cliente deja en promedio mientras permanece suscrito: (precio − costo variable) ÷ tasa de cancelación.</li>
+                <li><strong>LTV / costo de conseguir un cliente:</strong> mientras más alto, mejor. Una regla usada con frecuencia es que supere 3, pero no es una ley.</li>
+                <li><strong>Utilidad:</strong> ingresos menos todos los costos del mes. Si es negativa, el negocio pierde ese mes.</li>
+              </ul>
+              <p class="nota">Es un modelo simplificado: no incluye impuestos, comisiones de pago ni inversión inicial. Todos los valores son supuestos del ejercicio, no datos reales.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor pie__fila">
+      <img src="img/logo.png" alt="Re-crea" class="pie__logo">
+      <p>Proyecto formativo de estudiantes de tercero medio, electivo de Economía.<br>Liceo 7 Luisa Saavedra · Providencia, Chile.<br><a href="modelo.html">Modelo de negocio (proyecto académico)</a></p>
+    </div>
+  </footer>
+
+  <script src="js/estado.js"></script>
+  <script src="js/planes-data.js"></script>
+  <script src="js/modelo.js"></script>
+  <script src="js/menu.js"></script>
+</body>
+</html>

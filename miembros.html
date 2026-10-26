@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi cuenta | Re-crea</title>
+  <meta name="description" content="Tu cuenta simulada de Re-crea: plan del mes según tu perfil y seguimiento de avance. Demostración académica.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#528827">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+  <header class="encabezado">
+    <div class="contenedor encabezado__fila">
+      <a href="index.html" class="marca" aria-label="Re-crea, ir al inicio">
+        <img src="img/logo.png" alt="Logotipo Re-crea" class="marca__logo">
+      </a>
+      <button class="menu-boton" id="menuBoton" aria-expanded="false" aria-controls="menu">Menú</button>
+      <nav class="menu" id="menu" aria-label="Principal">
+        <a href="index.html#proyecto">El proyecto</a>
+        <a href="index.html#cuestionario">Cuestionario</a>
+        <a href="index.html#contenedores">¿Qué va dónde?</a>
+        <a href="index.html#opiniones">Opiniones</a>
+        <a href="planes.html" class="menu__destacado">Planes Plus</a>
+        <a href="miembros.html">Mi cuenta</a>
+      </nav>
+    </div>
+  </header>
+  <div class="banner-sim" role="note">
+    <strong>Proyecto académico.</strong> Esto es una simulación: las cuentas no son reales, no se realiza ningún cobro ni se pide información de pago.
+  </div>
+
+  <main id="contenido">
+
+    <!-- ========== Sin sesión: entrar o crear cuenta ========== -->
+    <div id="vistaAcceso" hidden>
+      <section class="hero hero--chico">
+        <div class="contenedor">
+          <p class="etiqueta">Mi cuenta</p>
+          <h1>Entra o crea tu cuenta</h1>
+          <p class="hero__bajada">Es una demostración: las cuentas viven solo en este navegador y no hay contraseñas.</p>
+        </div>
+      </section>
+
+      <section class="seccion seccion--corta">
+        <div class="contenedor">
+          <div id="cuentasGuardadas" hidden>
+            <h2 class="h-chico">Tus cuentas en este navegador</h2>
+            <div class="grilla grilla--3" id="listaGuardadas"></div>
+          </div>
+
+          <h2 class="h-chico">Entra con un usuario de ejemplo</h2>
+          <p class="seccion__intro">Mira cómo se ve cada plan ya en uso, sin crear nada.</p>
+          <div class="grilla grilla--3" id="listaEjemplos"></div>
+
+          <div class="cta-plus">
+            <div>
+              <h3>¿Prefieres crear la tuya?</h3>
+              <p>Elige un plan (Gratis o Plus), pon un apodo y listo.</p>
+            </div>
+            <a href="inscripcion.html" class="boton boton--primario">Crear cuenta</a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ========== Con sesión ========== -->
+    <div id="vistaCuenta" hidden>
+      <section class="hero hero--chico">
+        <div class="contenedor">
+          <p class="etiqueta" id="cuentaEtiqueta"></p>
+          <h1 id="cuentaSaludo"></h1>
+          <p class="hero__bajada" id="cuentaPerfil"></p>
+        </div>
+      </section>
+
+      <section class="seccion seccion--corta">
+        <div class="contenedor contenedor--medio">
+
+          <div id="avisoPerfil" class="perfil-aviso" hidden></div>
+
+          <!-- Plan Plus: plan completo -->
+          <div id="bloquePlus" hidden>
+            <div class="tabs" role="tablist" aria-label="Meses" id="mesTabs"></div>
+            <article class="tarjeta plan-mes">
+              <header>
+                <p class="plan-mes__mes" id="planMesNumero"></p>
+                <h2 id="planMesTitulo"></h2>
+              </header>
+              <div class="progreso" aria-live="polite">
+                <div class="progreso__barra"><div class="progreso__relleno" id="progresoRelleno"></div></div>
+                <p class="progreso__texto" id="progresoTexto"></p>
+              </div>
+              <h3>Por qué importa</h3>
+              <p id="planPorque"></p>
+              <h3>Tu lista de tareas</h3>
+              <ul class="tareas" id="planTareas"></ul>
+              <div class="consejos-vivienda">
+                <div class="consejo-v"><h4 id="viviendaTitulo"></h4><p id="viviendaTexto"></p></div>
+                <div class="consejo-v consejo-v--eco"><h4>Mirada de economía</h4><p id="economiaTexto"></p></div>
+              </div>
+            </article>
+            <p class="nota nota--centro">Simulación: en un servicio real, cada mes se desbloquearía a los 30 días. Aquí puedes ver los 3 meses de ejemplo.</p>
+          </div>
+
+          <!-- Plan Gratis: vista previa bloqueada -->
+          <div id="bloqueGratis" hidden>
+            <article class="tarjeta plan-mes plan-mes--bloqueado">
+              <header>
+                <p class="plan-mes__mes">Vista previa · Mes 1 <span class="insignia insignia--plus">Plus</span></p>
+                <h2 id="previaTitulo"></h2>
+              </header>
+              <p id="previaPorque"></p>
+              <div class="candado" role="note">
+                <p><strong>Tu lista de tareas, los consejos para tu vivienda y el seguimiento de avance son parte de Re-crea Plus.</strong></p>
+                <p>Con tu plan Gratis tienes el cuestionario, la guía de contenedores y el muro de opiniones.</p>
+                <a class="boton boton--primario" href="#cambiar-plan" id="btnSubir">Pasar a Plus (simulado)</a>
+              </div>
+            </article>
+          </div>
+
+          <!-- Datos de la cuenta y cambio de plan -->
+          <div class="tarjeta tarjeta--nota" id="cambiar-plan">
+            <h3>Tu cuenta (simulada)</h3>
+            <dl class="resumen" id="cuentaResumen"></dl>
+
+            <h3>Cambiar de plan</h3>
+            <div id="opcionesCambio" class="opciones-plan"></div>
+            <button type="button" class="boton boton--primario" id="btnCambiar">Aplicar cambio (simulado)</button>
+            <p class="estado" id="estadoCambio" role="status"></p>
+          </div>
+
+          <div class="tarjeta tarjeta--nota">
+            <h3>Sesión y cuenta</h3>
+            <div class="acciones-fila">
+              <button type="button" class="boton boton--secundario" id="btnSalir">Cerrar sesión</button>
+              <a href="index.html#cuestionario" class="boton boton--secundario">Rehacer el cuestionario</a>
+              <button type="button" class="boton boton--secundario boton--peligro" id="btnEliminar">Eliminar cuenta</button>
+            </div>
+            <p class="estado" id="estadoCuenta" role="status"></p>
+          </div>
+
+          <div class="tarjeta tarjeta--nota">
+            <h3>Instálala como app</h3>
+            <p>En el celular, abre el menú de tu navegador y elige <strong>"Agregar a la pantalla de inicio"</strong> o <strong>"Instalar app"</strong>. Re-crea se abrirá como una aplicación, sin barra del navegador.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor pie__fila">
+      <img src="img/logo.png" alt="Re-crea" class="pie__logo">
+      <p>Proyecto formativo de estudiantes de tercero medio, electivo de Economía.<br>Liceo 7 Luisa Saavedra · Providencia, Chile.</p>
+    </div>
+  </footer>
+
+  <script src="js/estado.js"></script>
+  <script src="js/planes-data.js"></script>
+  <script src="js/miembros.js"></script>
+  <script src="js/menu.js"></script>
+</body>
+</html>

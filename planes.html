@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Planes Plus | Re-crea</title>
+  <meta name="description" content="Re-crea Plus: un plan mensual de reciclaje hecho para tu perfil. Demostración académica con cuentas simuladas.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#528827">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+  <header class="encabezado">
+    <div class="contenedor encabezado__fila">
+      <a href="index.html" class="marca" aria-label="Re-crea, ir al inicio">
+        <img src="img/logo.png" alt="Logotipo Re-crea" class="marca__logo">
+      </a>
+      <button class="menu-boton" id="menuBoton" aria-expanded="false" aria-controls="menu">Menú</button>
+      <nav class="menu" id="menu" aria-label="Principal">
+        <a href="index.html#proyecto">El proyecto</a>
+        <a href="index.html#cuestionario">Cuestionario</a>
+        <a href="index.html#contenedores">¿Qué va dónde?</a>
+        <a href="index.html#opiniones">Opiniones</a>
+        <a href="planes.html" class="menu__destacado">Planes Plus</a>
+        <a href="miembros.html">Mi cuenta</a>
+      </nav>
+    </div>
+  </header>
+  <div class="banner-sim" role="note">
+    <strong>Proyecto académico.</strong> Esto es una simulación: las cuentas no son reales, no se realiza ningún cobro ni se pide información de pago.
+  </div>
+
+  <main id="contenido">
+    <section class="hero hero--chico">
+      <div class="contenedor">
+        <p class="etiqueta">Re-crea Plus</p>
+        <h1>Un plan nuevo cada mes, hecho para tu perfil</h1>
+        <p class="hero__bajada">El cuestionario te dice cómo eres. Re-crea Plus te acompaña mes a mes con un reto concreto, los pasos para lograrlo y un seguimiento de tu avance.</p>
+      </div>
+    </section>
+
+    <section class="seccion seccion--corta">
+      <div class="contenedor">
+        <div id="planPerfil" class="perfil-aviso"></div>
+      </div>
+    </section>
+
+    <section class="seccion seccion--corta" id="planes">
+      <div class="contenedor">
+        <div class="grilla grilla--3" id="planesGrid"></div>
+        <p class="nota nota--centro">Los precios son ficticios: esto es una demostración de la idea, no una oferta real.</p>
+      </div>
+    </section>
+
+    <section class="seccion seccion--suave">
+      <div class="contenedor">
+        <h2>Cómo funciona</h2>
+        <ol class="pasos-lista">
+          <li><span class="paso-num">1</span><div><h3>Haz el cuestionario</h3><p>6 preguntas para conocer tu perfil: cómo vives, cuánto sabes y cuánto tiempo tienes.</p></div></li>
+          <li><span class="paso-num">2</span><div><h3>Crea tu cuenta</h3><p>Elige el plan Gratis o Plus. Es una cuenta simulada: solo necesitas un apodo.</p></div></li>
+          <li><span class="paso-num">3</span><div><h3>Recibe tu plan del mes</h3><p>En "Mi cuenta" encuentras tu reto, el porqué, los pasos y consejos según tu vivienda.</p></div></li>
+          <li><span class="paso-num">4</span><div><h3>Marca tu avance</h3><p>Ve completando la lista de tareas y mira tu progreso crecer.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="seccion">
+      <div class="contenedor contenedor--angosto">
+        <h2>Preguntas frecuentes</h2>
+        <details class="faq"><summary>¿Esto es real? ¿Se cobra algo?</summary><p>No. Re-crea es un proyecto académico del electivo de Economía del Liceo 7 Luisa Saavedra. Las cuentas y los planes son una simulación para mostrar la idea: no hay pagos, no se pide tarjeta ni se entrega ningún producto.</p></details>
+        <details class="faq"><summary>¿Qué datos piden para crear una cuenta?</summary><p>Solo un nombre o apodo. No uses tu apellido, correo ni teléfono, y no hay contraseñas. Todo queda guardado únicamente en tu propio navegador.</p></details>
+        <details class="faq"><summary>¿Qué diferencia hay entre Gratis y Plus?</summary><p>Con el plan Gratis tienes el cuestionario, la guía y el muro de opiniones. Con Plus se desbloquea además el plan mensual personalizado con su lista de tareas.</p></details>
+        <details class="faq"><summary>¿Puedo cambiar de plan o cancelar?</summary><p>Sí, desde "Mi cuenta" puedes cambiar de plan, cerrar sesión o eliminar la cuenta simulada cuando quieras.</p></details>
+        <details class="faq"><summary>¿Cómo veo cómo funciona sin crear una cuenta?</summary><p>En "Mi cuenta" puedes entrar con un usuario de ejemplo (Valentina, Matías o Sofía) y ver cada plan ya en uso.</p></details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor pie__fila">
+      <img src="img/logo.png" alt="Re-crea" class="pie__logo">
+      <p>Proyecto formativo de estudiantes de tercero medio, electivo de Economía.<br>Liceo 7 Luisa Saavedra · Providencia, Chile.</p>
+    </div>
+  </footer>
+
+  <script src="js/estado.js"></script>
+  <script src="js/planes-data.js"></script>
+  <script src="js/planes.js"></script>
+  <script src="js/menu.js"></script>
+</body>
+</html>
