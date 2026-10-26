@@ -28,6 +28,8 @@
   if (menu && typeof Recrea !== 'undefined') {
     const u = Recrea.usuarioActivo();
     const enlaceCuenta = menu.querySelector('a[href="miembros.html"]');
+    const enlaceCrear = menu.querySelector('a[href="inscripcion.html"]');
+    if (u && enlaceCrear) enlaceCrear.hidden = true;    // con sesión iniciada ya no hace falta
     if (u && enlaceCuenta) {
       const plus = Recrea.esPlus(u);
       enlaceCuenta.textContent = u.apodo + ' ';
