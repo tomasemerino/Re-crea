@@ -51,26 +51,32 @@ const PREGUNTAS = [
 /* ---------- 2) PERFILES (gana el primero que calce, de arriba hacia abajo) ---------- */
 const PERFILES = [
   { cuando: { habito: ['siempre'], conocimiento: ['bastante', 'mucho'] },
+    id: 'experto',
     nombre: 'Reciclador/a experto/a',
     texto: 'Ya reciclas y sabes cómo hacerlo bien. Tu desafío ahora es ir un paso más allá: reducir lo que desechas y motivar a otros.' },
 
   { cuando: { interes: ['algo', 'mucho'], tiempo: ['poco', 'no'] },
+    id: 'sin-tiempo',
     nombre: 'Con ganas, pero sin tiempo',
     texto: 'Te importa el medioambiente, pero la rutina te gana. Para ti sirven las soluciones simples, rápidas y que no te quiten más de 5 minutos al día.' },
 
   { cuando: { interes: ['mucho'], habito: ['nunca', 'aveces'] },
+    id: 'listo',
     nombre: 'Listo/a para partir',
     texto: 'Tienes la motivación y el tiempo para empezar. Solo falta convertir las ganas en un hábito: te dejamos un plan paso a paso.' },
 
   { cuando: { habito: ['siempre'] },
+    id: 'constante',
     nombre: 'Reciclador/a constante',
     texto: 'Reciclas con regularidad. Afinar algunos detalles hará que tu esfuerzo rinda todavía más.' },
 
   { cuando: { interes: ['nada'] },
+    id: 'esceptico',
     nombre: 'Escéptico/a curioso/a',
     texto: 'Quizás no te entusiasma el tema, y está bien. Te mostramos acciones pequeñas con beneficios concretos, como ahorrar dinero y espacio en casa.' },
 
   { cuando: {},   // regla vacía = calza siempre (perfil por defecto)
+    id: 'camino',
     nombre: 'En camino',
     texto: 'Ya diste los primeros pasos. Con algunos ajustes simples puedes aportar mucho más.' }
 ];
@@ -203,6 +209,11 @@ const MAX_CONSEJOS = 7;   // cantidad máxima de recomendaciones a mostrar
     const perfil = PERFILES.find(r => calza(r, respuestas));
     const consejos = CONSEJOS.filter(r => calza(r, respuestas)).slice(0, MAX_CONSEJOS);
 
+    // Guardamos el perfil en el navegador para usarlo en "Planes" y "Mi cuenta" (ver js/estado.js)
+    if (typeof Recrea !== 'undefined') {
+      Recrea.guardarPerfil({ id: perfil.id, nombre: perfil.nombre, respuestas: { ...respuestas } });
+    }
+
     // Resumen de lo que respondió la persona
     const resumen = PREGUNTAS.map(p => {
       const o = p.opciones.find(x => x.valor === respuestas[p.id]);
@@ -226,8 +237,18 @@ const MAX_CONSEJOS = 7;   // cantidad máxima de recomendaciones a mostrar
             </li>`).join('')}
         </ul>
         <p class="resultado__resumen"><strong>Tus respuestas:</strong> ${resumen}</p>
+        <div class="cta-plus">
+          <div>
+            <h3>Lleva tu perfil al siguiente nivel</h3>
+            <p>Con <strong>Re-crea Plus</strong> recibirías cada mes un plan hecho para el perfil "${perfil.nombre}". <em>Proyecto académico: la suscripción es una simulación.</em></p>
+          </div>
+          <div class="cta-plus__botones">
+            <a href="inscripcion.html" class="boton boton--primario">Crear cuenta</a>
+            <a href="planes.html" class="boton boton--secundario">Ver planes</a>
+          </div>
+        </div>
         <div class="compartir">
-          <p><strong>Comparte tu perfil</strong> :</p>
+          <p><strong>Comparte tu perfil</strong> y desafía a tus amigos y familia a descubrir el suyo:</p>
           <div class="compartir__botones">
             <a class="boton boton--secundario" id="compWhatsapp" href="#" target="_blank" rel="noopener">WhatsApp</a>
             <button type="button" class="boton boton--secundario" id="compCopiar">Copiar mensaje y link</button>
