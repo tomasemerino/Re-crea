@@ -3,14 +3,16 @@
    Dibuja las tarjetas de planes a partir de PLANES (js/planes-data.js)
    y adapta los botones según si hay una sesión iniciada.
    ========================================================== */
-(function () {
+(async function () {
   const grid = document.getElementById('planesGrid');
   const aviso = document.getElementById('planPerfil');
   if (!grid || !aviso) return;
 
-  const usuario = Recrea.usuarioActivo();
   const perfil = Recrea.perfil();
   const info = perfil && PERFILES_PLUS[perfil.id];
+
+  let usuario = null;
+  try { usuario = await Cuentas.sesion(); } catch { /* sin conexión: se muestra como visitante */ }
 
   function el(tag, clase, texto) {
     const e = document.createElement(tag);
@@ -29,7 +31,7 @@
     const plan = PLANES.find(p => p.id === usuario.plan);
     aviso.className = 'perfil-aviso perfil-aviso--ok';
     const t = el('p');
-    t.append('Tienes la sesión iniciada como ', el('strong', '', usuario.apodo), ' (', plan ? plan.nombre : 'Plus', ').');
+    t.append('Tienes la sesión iniciada como ', el('strong', '', usuario.usuario), ' (', plan ? plan.nombre : 'Plus', ').');
     aviso.append(t, enlace('Ir a Mi cuenta', 'miembros.html', 'boton boton--primario'));
   } else {
     aviso.className = 'perfil-aviso' + (info ? ' perfil-aviso--ok' : '');

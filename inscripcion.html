@@ -26,13 +26,14 @@
         <a href="index.html#cuestionario">Cuestionario</a>
         <a href="index.html#contenedores">¿Qué va dónde?</a>
         <a href="index.html#opiniones">Opiniones</a>
-        <a href="planes.html" class="menu__destacado">Planes Plus</a>
-        <a href="miembros.html">Mi cuenta</a>
+        <a href="planes.html">Planes Plus</a>
+        <a href="miembros.html">Iniciar sesión</a>
+        <a href="inscripcion.html" class="menu__destacado">Crear cuenta</a>
       </nav>
     </div>
   </header>
   <div class="banner-sim" role="note">
-    <strong>Proyecto académico.</strong> Esto es una simulación: las cuentas no son reales, no se realiza ningún cobro ni se pide información de pago.
+    <strong>Proyecto académico.</strong> Las cuentas te permiten probar la idea, pero los planes son una simulación: no se realiza ningún cobro ni se pide información de pago.
   </div>
 
   <main id="contenido">
@@ -41,7 +42,8 @@
 
         <div id="vistaFormulario">
           <h1 class="titulo-pagina">Crea tu cuenta de Re-crea</h1>
-          <p class="seccion__intro">Completa los datos para continuar. Es una simulación: <strong>no escribas datos reales</strong> (ni apellido, correo, teléfono ni tarjeta). No hay contraseña.</p>
+          <p class="ayuda ya-cuenta">¿Ya tienes una cuenta? <a href="miembros.html">Inicia sesión</a>.</p>
+          <p class="seccion__intro">Completa los datos para continuar. Elige un usuario y una contraseña para entrar cuando quieras. <strong>No escribas datos personales</strong> (ni apellido, correo, teléfono ni tarjeta) y no uses una contraseña que ya uses en otro sitio. Los pagos son simulados.</p>
 
           <form class="tarjeta" id="formInscripcion" novalidate>
             <fieldset class="campo-grupo">
@@ -50,10 +52,13 @@
             </fieldset>
 
             <fieldset class="campo-grupo">
-              <legend>2. Tu nombre o apodo</legend>
-              <label for="apodo" class="sr-only">Nombre o apodo</label>
-              <input type="text" id="apodo" maxlength="30" placeholder="Ej: Camila" autocomplete="off" required>
-              <p class="ayuda">Solo un nombre o apodo. No uses correos ni números de teléfono.</p>
+              <legend>2. Tu usuario y contraseña</legend>
+              <label for="usuario">Usuario</label>
+              <input type="text" id="usuario" maxlength="20" placeholder="Ej: camila.recicla" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+              <p class="ayuda">3 a 20 caracteres: letras sin tilde, números, punto, guion o guion bajo. No uses tu nombre completo, correo ni teléfono.</p>
+              <label for="clave">Contraseña</label>
+              <input type="password" id="clave" maxlength="60" placeholder="Mínimo 6 caracteres" autocomplete="new-password" required>
+              <label class="check check--chico"><input type="checkbox" id="verClave"><span>Mostrar contraseña</span></label>
             </fieldset>
 
             <fieldset class="campo-grupo" id="grupoPerfil">
@@ -64,30 +69,30 @@
             <div class="aviso aviso--sim">
               <label class="check">
                 <input type="checkbox" id="acepto" required>
-                <span>Entiendo que esto es una <strong>simulación académica</strong>: la cuenta no es real, no se realiza ningún cobro y no se entregan datos de pago.</span>
+                <span>Entiendo que Re-crea es un <strong>proyecto académico</strong>: los planes son una simulación, no se realiza ningún cobro y no debo entregar datos de pago.</span>
               </label>
             </div>
 
             <p class="estado" id="estadoForm" role="status"></p>
-            <button type="submit" class="boton boton--primario boton--ancho">Crear cuenta simulada</button>
+            <button type="submit" class="boton boton--primario boton--ancho">Crear cuenta</button>
           </form>
 
           <div class="tarjeta tarjeta--nota">
             <h3>¿Qué pasaría en la vida real?</h3>
-            <p>En un servicio real, la cuenta se crearía con correo y contraseña en un servidor seguro, y el pago lo procesaría una <strong>pasarela de pago</strong> (por ejemplo Webpay, Mercado Pago o Stripe) en su propio sitio, <em>no</em> en la página del negocio. Re-crea no hace nada de eso: solo muestra cómo sería el recorrido.</p>
+            <p>En un servicio real, además del usuario y la contraseña se pediría un correo verificado, y el pago lo procesaría una <strong>pasarela de pago</strong> (por ejemplo Webpay, Mercado Pago o Stripe) en su propio sitio, <em>no</em> en la página del negocio. Re-crea no hace nada de eso: solo muestra cómo sería el recorrido.</p>
           </div>
         </div>
 
         <div id="vistaConfirmacion" hidden>
           <div class="confirmacion">
-            <p class="etiqueta">Cuenta simulada creada</p>
+            <p class="etiqueta">Cuenta creada</p>
             <h1 class="titulo-pagina" id="confTitulo">¡Bienvenido/a!</h1>
             <p id="confTexto"></p>
           </div>
           <div class="tarjeta">
             <h3>Resumen</h3>
             <dl class="resumen" id="confResumen"></dl>
-            <p class="nota">Ningún cobro fue realizado. Esta cuenta solo existe en este navegador.</p>
+            <p class="nota">Ningún cobro fue realizado: el plan es una simulación. Para volver a entrar usa tu usuario y contraseña en "Iniciar sesión". No hay recuperación de contraseña, así que anótala.</p>
           </div>
           <div class="acciones-centro">
             <a href="miembros.html" class="boton boton--primario">Ir a Mi cuenta</a>
@@ -107,6 +112,7 @@
   </footer>
 
   <script src="js/estado.js"></script>
+  <script src="js/cuentas.js"></script>
   <script src="js/planes-data.js"></script>
   <script src="js/inscripcion.js"></script>
   <script src="js/menu.js"></script>

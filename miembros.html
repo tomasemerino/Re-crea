@@ -26,13 +26,14 @@
         <a href="index.html#cuestionario">Cuestionario</a>
         <a href="index.html#contenedores">¿Qué va dónde?</a>
         <a href="index.html#opiniones">Opiniones</a>
-        <a href="planes.html" class="menu__destacado">Planes Plus</a>
-        <a href="miembros.html">Mi cuenta</a>
+        <a href="planes.html">Planes Plus</a>
+        <a href="miembros.html">Iniciar sesión</a>
+        <a href="inscripcion.html" class="menu__destacado">Crear cuenta</a>
       </nav>
     </div>
   </header>
   <div class="banner-sim" role="note">
-    <strong>Proyecto académico.</strong> Esto es una simulación: las cuentas no son reales, no se realiza ningún cobro ni se pide información de pago.
+    <strong>Proyecto académico.</strong> Las cuentas te permiten probar la idea, pero los planes son una simulación: no se realiza ningún cobro ni se pide información de pago.
   </div>
 
   <main id="contenido">
@@ -42,29 +43,29 @@
       <section class="hero hero--chico">
         <div class="contenedor">
           <p class="etiqueta">Mi cuenta</p>
-          <h1>Entra o crea tu cuenta</h1>
-          <p class="hero__bajada">Es una demostración: las cuentas viven solo en este navegador y no hay contraseñas.</p>
+          <h1>Inicia sesión</h1>
+          <p class="hero__bajada">Entra con tu usuario y contraseña para ver el plan que te corresponde.</p>
         </div>
       </section>
 
       <section class="seccion seccion--corta">
-        <div class="contenedor">
-          <div id="cuentasGuardadas" hidden>
-            <h2 class="h-chico">Tus cuentas en este navegador</h2>
-            <div class="grilla grilla--3" id="listaGuardadas"></div>
-          </div>
+        <div class="contenedor contenedor--angosto">
+          <form class="tarjeta" id="formAcceso" novalidate>
+            <label for="accUsuario">Usuario</label>
+            <input type="text" id="accUsuario" maxlength="20" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+            <label for="accClave">Contraseña</label>
+            <input type="password" id="accClave" maxlength="60" autocomplete="current-password" required>
+            <label class="check check--chico"><input type="checkbox" id="accVer"><span>Mostrar contraseña</span></label>
+            <p class="estado" id="estadoAcceso" role="status"></p>
+            <button type="submit" class="boton boton--primario boton--ancho" id="btnEntrar">Entrar</button>
+            <p class="ayuda ya-cuenta">¿No tienes cuenta? <a href="inscripcion.html">Crea una gratis</a>.</p>
+          </form>
 
-          <h2 class="h-chico">Entra con un usuario de ejemplo</h2>
-          <p class="seccion__intro">Mira cómo se ve cada plan ya en uso, sin crear nada.</p>
+          <div class="aviso-modo" id="avisoModo" hidden></div>
+
+          <h2 class="h-chico">¿Solo quieres mirar? Prueba un usuario de ejemplo</h2>
+          <p class="seccion__intro">Mira cómo se ve cada plan ya en uso, sin crear nada. Estos usuarios son ficticios y solo existen en tu navegador.</p>
           <div class="grilla grilla--3" id="listaEjemplos"></div>
-
-          <div class="cta-plus">
-            <div>
-              <h3>¿Prefieres crear la tuya?</h3>
-              <p>Elige un plan (Gratis o Plus), pon un apodo y listo.</p>
-            </div>
-            <a href="inscripcion.html" class="boton boton--primario">Crear cuenta</a>
-          </div>
         </div>
       </section>
     </div>
@@ -126,7 +127,7 @@
 
           <!-- Datos de la cuenta y cambio de plan -->
           <div class="tarjeta tarjeta--nota" id="cambiar-plan">
-            <h3>Tu cuenta (simulada)</h3>
+            <h3>Tu cuenta</h3>
             <dl class="resumen" id="cuentaResumen"></dl>
 
             <h3>Cambiar de plan</h3>
@@ -141,6 +142,10 @@
               <button type="button" class="boton boton--secundario" id="btnSalir">Cerrar sesión</button>
               <a href="index.html#cuestionario" class="boton boton--secundario">Rehacer el cuestionario</a>
               <button type="button" class="boton boton--secundario boton--peligro" id="btnEliminar">Eliminar cuenta</button>
+            </div>
+            <div id="confirmarEliminar" hidden>
+              <label for="claveEliminar">Para eliminar tu cuenta, escribe tu contraseña</label>
+              <input type="password" id="claveEliminar" maxlength="60" autocomplete="current-password">
             </div>
             <p class="estado" id="estadoCuenta" role="status"></p>
           </div>
@@ -162,6 +167,7 @@
   </footer>
 
   <script src="js/estado.js"></script>
+  <script src="js/cuentas.js"></script>
   <script src="js/planes-data.js"></script>
   <script src="js/miembros.js"></script>
   <script src="js/menu.js"></script>

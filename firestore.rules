@@ -1,6 +1,6 @@
 rules_version = '2';
 
-// Reglas de seguridad para el muro de opiniones de Re-crea.
+// Reglas de seguridad de Re-crea: muro de opiniones + cuentas de usuario.
 // Se pegan en: Firebase consola -> Firestore Database -> pestaña "Reglas" -> Publicar.
 //
 // Qué permiten:
@@ -8,6 +8,11 @@ rules_version = '2';
 //  - Cualquier persona puede CREAR una opinión, pero siempre queda "pendiente" (approved == false)
 //    y con límites de largo. Ustedes la aprueban cambiando approved a true en la consola.
 //  - Nadie puede editar ni borrar desde la página web.
+//
+// Cuentas (colección "usuarios", un documento por persona con el mismo id de Firebase Authentication):
+//  - Cada persona solo puede leer, crear, modificar y borrar SU PROPIO documento.
+//  - El nombre de usuario y la fecha de creación no se pueden cambiar después.
+//  - El plan es solo una etiqueta de simulación: no hay pagos reales detrás.
 service cloud.firestore {
   match /databases/{database}/documents {
     match /opiniones/{id} {
@@ -23,6 +28,30 @@ service cloud.firestore {
         && request.resource.data.fecha == request.time;
 
       allow update, delete: if false;
+    }
+
+    match /usuarios/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+
+      allow create: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['usuario', 'plan', 'perfilId', 'vivienda', 'codigo', 'fecha', 'progreso'])
+        && request.resource.data.usuario is string
+        && request.resource.data.usuario.size() >= 3 && request.resource.data.usuario.size() <= 20
+        && request.resource.data.plan in ['gratis', 'mensual', 'anual']
+        && request.resource.data.vivienda in ['casa', 'depto']
+        && request.resource.data.perfilId is string && request.resource.data.perfilId.size() <= 20
+        && request.resource.data.progreso is map;
+
+      allow update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['usuario', 'plan', 'perfilId', 'vivienda', 'codigo', 'fecha', 'progreso'])
+        && request.resource.data.usuario == resource.data.usuario
+        && request.resource.data.fecha == resource.data.fecha
+        && request.resource.data.codigo == resource.data.codigo
+        && request.resource.data.plan in ['gratis', 'mensual', 'anual']
+        && request.resource.data.vivienda in ['casa', 'depto']
+        && request.resource.data.progreso is map;
+
+      allow delete: if request.auth != null && request.auth.uid == uid;
     }
   }
 }

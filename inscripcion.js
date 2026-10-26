@@ -1,8 +1,8 @@
 /* ==========================================================
    Re-crea · inscripcion.js
-   Crear una cuenta SIMULADA y elegir plan.
-   - No hay contraseñas ni datos de pago.
-   - La cuenta se guarda solo en este navegador (ver js/estado.js).
+   Crear una cuenta (usuario + contraseña) y elegir plan.
+   - La cuenta se guarda con js/cuentas.js (Firebase si está configurado; si no, en este navegador).
+   - El plan y el pago son una simulación: no hay datos de pago.
    ========================================================== */
 (function () {
   const form = document.getElementById('formInscripcion');
@@ -15,7 +15,6 @@
   const estado = document.getElementById('estadoForm');
 
   const perfilGuardado = Recrea.perfil();
-  const sesion = Recrea.usuarioActivo();
 
   // Plan elegido por la dirección: inscripcion.html?plan=anual
   const parametro = new URLSearchParams(location.search).get('plan');
@@ -29,10 +28,13 @@
   }
 
   /* ---------- Aviso si ya hay una sesión ---------- */
-  if (sesion) {
-    const n = el('p', 'ayuda', 'Ya tienes la sesión iniciada como ' + sesion.apodo + '. Al crear una cuenta nueva, pasarás a usar la nueva.');
-    form.prepend(n);
-  }
+  Cuentas.sesion().then(sesion => {
+    if (sesion) form.prepend(el('p', 'ayuda', 'Ya tienes la sesión iniciada como ' + sesion.usuario + '. Si creas una cuenta nueva, pasarás a usar la nueva.'));
+  }).catch(() => { /* sin acción: el formulario igual se puede usar */ });
+
+  document.getElementById('verClave').addEventListener('change', (e) => {
+    document.getElementById('clave').type = e.target.checked ? 'text' : 'password';
+  });
 
   /* ---------- 1) Opciones de plan ---------- */
   PLANES.forEach(plan => {
@@ -84,12 +86,14 @@
     estado.className = 'estado estado--error';
   }
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     estado.textContent = '';
+    estado.className = 'estado';
 
     const planId = (form.querySelector('input[name=plan]:checked') || {}).value;
-    const apodo = document.getElementById('apodo').value.trim();
+    const usuario = Cuentas.normalizar(document.getElementById('usuario').value);
+    const clave = document.getElementById('clave').value;
     const vivienda = (form.querySelector('input[name=vivienda]:checked') || {}).value;
     const perfilId = perfilGuardado && PERFILES_PLUS[perfilGuardado.id]
       ? perfilGuardado.id
@@ -97,19 +101,25 @@
     const acepto = document.getElementById('acepto').checked;
 
     if (!planId) return mostrarError('Elige un plan.');
-    if (apodo.length < 2) return mostrarError('Escribe un nombre o apodo (mínimo 2 letras).');
-    if (apodo.includes('@') || /\d{6,}/.test(apodo.replace(/[\s.-]/g, ''))) {
-      return mostrarError('Por seguridad, no escribas correos ni teléfonos: usa solo un nombre o apodo.');
-    }
+    const errU = Cuentas.validarUsuario(usuario);
+    if (errU) return mostrarError(errU);
+    const errC = Cuentas.validarClave(clave);
+    if (errC) return mostrarError(errC);
     if (!perfilId) return mostrarError('Elige tu perfil.');
     if (!vivienda) return mostrarError('Indica si vives en casa o en departamento.');
-    if (!acepto) return mostrarError('Marca la casilla para confirmar que entiendes que es una simulación.');
+    if (!acepto) return mostrarError('Marca la casilla para confirmar que entiendes que es un proyecto académico.');
 
-    const usuario = Recrea.crearUsuario({ apodo, perfilId, vivienda, plan: planId });
-    if (!usuario) {
-      return mostrarError('Tu navegador no permite guardar datos (¿modo privado?). Prueba en una ventana normal.');
+    const boton = form.querySelector('button[type=submit]');
+    boton.disabled = true;
+    estado.textContent = 'Creando tu cuenta…';
+    try {
+      const u = await Cuentas.registrar({ usuario, clave, plan: planId, perfilId, vivienda });
+      mostrarConfirmacion(u);
+    } catch (err) {
+      mostrarError(err.message);
+    } finally {
+      boton.disabled = false;
     }
-    mostrarConfirmacion(usuario);
   });
 
   /* ---------- Confirmación ---------- */
@@ -117,13 +127,14 @@
     const plan = PLANES.find(p => p.id === u.plan);
     vistaForm.hidden = true;
     vistaConf.hidden = false;
-    document.getElementById('confTitulo').textContent = '¡Bienvenido/a, ' + u.apodo + '!';
+    document.getElementById('confTitulo').textContent = '¡Bienvenido/a, ' + u.usuario + '!';
     document.getElementById('confTexto').textContent = plan.precio === 0
-      ? 'Tu cuenta simulada con el plan Gratis está lista. Puedes pasar a Plus cuando quieras desde "Mi cuenta".'
-      : 'Tu cuenta simulada con ' + plan.nombre + ' está lista. Tu primer plan mensual ya te espera en "Mi cuenta".';
+      ? 'Tu cuenta con el plan Gratis está lista. Puedes pasar a Plus cuando quieras desde "Mi cuenta".'
+      : 'Tu cuenta con ' + plan.nombre + ' está lista. Tu primer plan mensual ya te espera en "Mi cuenta".';
     const dl = document.getElementById('confResumen');
     dl.textContent = '';
     [
+      ['Usuario', u.usuario],
       ['Plan', plan.nombre],
       ['Monto (ficticio)', plan.precio === 0 ? 'Gratis' : formatoCLP(plan.precio) + ' ' + plan.periodo],
       ['Perfil', PERFILES_PLUS[u.perfilId].nombre],

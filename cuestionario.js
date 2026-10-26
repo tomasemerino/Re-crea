@@ -242,7 +242,10 @@ const MAX_CONSEJOS = 7;   // cantidad máxima de recomendaciones a mostrar
             <h3>Lleva tu perfil al siguiente nivel</h3>
             <p>Con <strong>Re-crea Plus</strong> recibirías cada mes un plan hecho para el perfil "${perfil.nombre}". <em>Proyecto académico: la suscripción es una simulación.</em></p>
           </div>
-          <a href="planes.html" class="boton boton--primario">Ver planes</a>
+          <div class="cta-plus__botones">
+            <a href="inscripcion.html" class="boton boton--primario">Crear cuenta</a>
+            <a href="planes.html" class="boton boton--secundario">Ver planes</a>
+          </div>
         </div>
         <div class="compartir">
           <p><strong>Comparte tu perfil</strong> y desafía a tus amigos y familia a descubrir el suyo:</p>

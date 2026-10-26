@@ -2,7 +2,7 @@
    Permite instalar el sitio como app y abrirlo aunque la conexión falle un momento.
    Estrategia "red primero": siempre intenta traer la versión nueva y solo usa la copia guardada si no hay internet.
    Así, cuando actualicen el sitio, la gente ve los cambios sin quedarse con versiones viejas. */
-const CACHE = 'recrea-v3';
+const CACHE = 'recrea-v4';
 
 self.addEventListener('install', () => self.skipWaiting());
 

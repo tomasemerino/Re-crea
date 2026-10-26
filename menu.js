@@ -24,19 +24,30 @@
     });
   }
 
-  // Mostrar quién tiene la sesión iniciada (si hay una)
-  if (menu && typeof Recrea !== 'undefined') {
-    const u = Recrea.usuarioActivo();
+  // Mostrar quién tiene la sesión iniciada (copia mínima que deja js/cuentas.js en este navegador)
+  function pintarCuenta() {
+    if (!menu) return;
+    let u = null;
+    try { u = JSON.parse(localStorage.getItem('recrea_menu')); } catch { u = null; }
     const enlaceCuenta = menu.querySelector('a[href="miembros.html"]');
-    if (u && enlaceCuenta) {
-      const plus = Recrea.esPlus(u);
-      enlaceCuenta.textContent = u.apodo + ' ';
+    const enlaceCrear = menu.querySelector('a[href="inscripcion.html"]');
+    const conSesion = !!(u && u.usuario);
+    if (enlaceCrear) enlaceCrear.hidden = conSesion;      // con sesión iniciada ya no hace falta
+    if (!enlaceCuenta) return;
+    enlaceCuenta.textContent = '';
+    if (conSesion) {
+      const plus = u.plan !== 'gratis';
+      enlaceCuenta.append(u.usuario + ' ');
       const ins = document.createElement('span');
       ins.className = 'insignia' + (plus ? ' insignia--plus' : '');
       ins.textContent = plus ? 'Plus' : 'Gratis';
       enlaceCuenta.append(ins);
+    } else {
+      enlaceCuenta.textContent = 'Iniciar sesión';
     }
   }
+  pintarCuenta();
+  window.addEventListener('recrea:sesion', pintarCuenta);   // lo avisa js/cuentas.js al crear o cerrar sesión
 
   // App instalable: solo funciona en http(s), no abriendo el archivo directamente
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {

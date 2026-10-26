@@ -1,11 +1,11 @@
 /* ==========================================================
    Re-crea · miembros.js
    "Mi cuenta":
-   - Sin sesión: elegir un usuario de ejemplo, entrar a una cuenta guardada o crear una.
+   - Sin sesión: formulario de usuario y contraseña, o un usuario de ejemplo.
    - Con sesión: plan del mes (Plus) o vista previa bloqueada (Gratis), cambio de plan,
-     cerrar sesión y eliminar la cuenta. Todo simulado y guardado solo en este navegador.
+     cerrar sesión y eliminar la cuenta. Los planes y pagos son una simulación.
    ========================================================== */
-(function () {
+(async function () {
   const vistaAcceso = document.getElementById('vistaAcceso');
   const vistaCuenta = document.getElementById('vistaCuenta');
   if (!vistaAcceso || !vistaCuenta) return;
@@ -26,8 +26,31 @@
   /* ======================================================
      SIN SESIÓN
      ====================================================== */
-  function mostrarAcceso() {
+  async function mostrarAcceso() {
     vistaAcceso.hidden = false;
+
+    // Formulario de ingreso
+    const form = document.getElementById('formAcceso');
+    const estado = document.getElementById('estadoAcceso');
+    document.getElementById('accVer').addEventListener('change', (e) => {
+      document.getElementById('accClave').type = e.target.checked ? 'text' : 'password';
+    });
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      estado.textContent = ''; estado.className = 'estado';
+      const usuario = document.getElementById('accUsuario').value;
+      const clave = document.getElementById('accClave').value;
+      if (!usuario.trim() || !clave) { estado.textContent = 'Escribe tu usuario y tu contraseña.'; estado.className = 'estado estado--error'; return; }
+      const boton = document.getElementById('btnEntrar');
+      boton.disabled = true; estado.textContent = 'Entrando…';
+      try {
+        await Cuentas.entrar(usuario, clave);
+        location.href = 'miembros.html';
+      } catch (err) {
+        estado.textContent = err.message; estado.className = 'estado estado--error';
+        boton.disabled = false;
+      }
+    });
 
     // Usuarios de ejemplo
     const ejemplos = document.getElementById('listaEjemplos');
@@ -35,29 +58,22 @@
       const card = el('article', 'enlace-tarjeta');
       const cab = el('h3', 'usuario-nombre', demo.apodo + ' ');
       cab.append(insignia(demo.plan));
-      const boton = el('button', 'boton boton--secundario', 'Entrar como ' + demo.apodo);
+      const boton = el('button', 'boton boton--secundario', 'Ver como ' + demo.apodo);
       boton.type = 'button';
-      boton.addEventListener('click', () => { Recrea.entrarComoEjemplo(demo); location.reload(); });
+      boton.addEventListener('click', () => { Cuentas.entrarEjemplo(demo); location.reload(); });
       card.append(cab, el('p', '', demo.descripcion), boton);
       ejemplos.append(card);
     });
 
-    // Cuentas propias guardadas en este navegador
-    const propias = Recrea.usuarios().filter(u => !u.ejemplo);
-    if (propias.length) {
-      document.getElementById('cuentasGuardadas').hidden = false;
-      const lista = document.getElementById('listaGuardadas');
-      propias.forEach(u => {
-        const card = el('article', 'enlace-tarjeta');
-        const cab = el('h3', 'usuario-nombre', u.apodo + ' ');
-        cab.append(insignia(u.plan));
-        const info = PERFILES_PLUS[u.perfilId];
-        const boton = el('button', 'boton boton--primario', 'Entrar');
-        boton.type = 'button';
-        boton.addEventListener('click', () => { Recrea.entrar(u.id); location.reload(); });
-        card.append(cab, el('p', '', info ? info.nombre : ''), boton);
-        lista.append(card);
-      });
+    // Aviso si estamos en modo de prueba (Firebase sin configurar)
+    try {
+      if (await Cuentas.modo() === 'local') {
+        const aviso = document.getElementById('avisoModo');
+        aviso.hidden = false;
+        aviso.textContent = 'Modo de prueba: las cuentas se guardan solo en este navegador. En el sitio publicado se guardan en línea y funcionan en cualquier dispositivo.';
+      }
+    } catch (err) {
+      estado.textContent = err.message; estado.className = 'estado estado--error';
     }
   }
 
@@ -66,8 +82,9 @@
      ====================================================== */
   let mesActual = 1;
 
+  let u = null;   // usuario con sesión iniciada (se vuelve a cargar tras cada cambio)
+
   function mostrarCuenta() {
-    const u = Recrea.usuarioActivo();
     if (!u) { location.reload(); return; }
 
     vistaAcceso.hidden = true;
@@ -75,25 +92,25 @@
 
     const perfilId = CONTENIDO_PLUS[u.perfilId] ? u.perfilId : 'camino';
     const info = PERFILES_PLUS[perfilId];
-    const esPlus = Recrea.esPlus(u);
+    const esPlus = Cuentas.esPlus(u);
 
     document.getElementById('cuentaEtiqueta').textContent =
-      nombrePlan(u.plan) + (u.ejemplo ? ' · usuario de ejemplo' : ' · cuenta simulada');
-    document.getElementById('cuentaSaludo').textContent = 'Hola, ' + u.apodo;
+      nombrePlan(u.plan) + (u.ejemplo ? ' · usuario de ejemplo' : ' · @' + u.usuario);
+    document.getElementById('cuentaSaludo').textContent = 'Hola, ' + u.usuario;
     document.getElementById('cuentaPerfil').textContent = 'Tu perfil: ' + info.nombre + '. ' + info.enfoque;
 
-    avisoPerfilNuevo(u);
+    avisoPerfilNuevo();
 
     document.getElementById('bloquePlus').hidden = !esPlus;
     document.getElementById('bloqueGratis').hidden = esPlus;
-    if (esPlus) dibujarPlus(u, perfilId); else dibujarPrevia(perfilId);
+    if (esPlus) dibujarPlus(perfilId); else dibujarPrevia(perfilId);
 
-    dibujarResumen(u, info);
-    dibujarCambioPlan(u);
+    dibujarResumen(info);
+    dibujarCambioPlan();
   }
 
   /* ---------- Si rehizo el cuestionario con otro resultado ---------- */
-  function avisoPerfilNuevo(u) {
+  function avisoPerfilNuevo() {
     const caja = document.getElementById('avisoPerfil');
     caja.hidden = true; caja.textContent = '';
     const ultimo = Recrea.perfil();
@@ -102,17 +119,17 @@
     caja.append(el('p', '', 'Tu último resultado del cuestionario es "' + PERFILES_PLUS[ultimo.id].nombre + '". ¿Quieres actualizar tu plan a ese perfil?'));
     const b = el('button', 'boton boton--primario', 'Actualizar mi perfil');
     b.type = 'button';
-    b.addEventListener('click', () => {
-      Recrea.actualizarUsuario(u.id, { perfilId: ultimo.id });
-      if (ultimo.respuestas && ultimo.respuestas.vivienda) Recrea.actualizarUsuario(u.id, { vivienda: ultimo.respuestas.vivienda });
-      mesActual = 1;
-      mostrarCuenta();
+    b.addEventListener('click', async () => {
+      const cambios = { perfilId: ultimo.id };
+      if (ultimo.respuestas && ultimo.respuestas.vivienda) cambios.vivienda = ultimo.respuestas.vivienda;
+      try { u = await Cuentas.actualizar(cambios); mesActual = 1; mostrarCuenta(); }
+      catch (err) { caja.append(el('p', 'estado estado--error', err.message)); }
     });
     caja.append(b);
   }
 
   /* ---------- Plan Plus: pestañas, tareas y progreso ---------- */
-  function dibujarPlus(u, perfilId) {
+  function dibujarPlus(perfilId) {
     const meses = Object.keys(CONTENIDO_PLUS[perfilId]).map(Number).sort((a, b) => a - b);
     if (!meses.includes(mesActual)) mesActual = meses[0];
 
@@ -123,7 +140,7 @@
       b.type = 'button';
       b.setAttribute('role', 'tab');
       b.setAttribute('aria-selected', m === mesActual ? 'true' : 'false');
-      b.addEventListener('click', () => { mesActual = m; dibujarPlus(u, perfilId); });
+      b.addEventListener('click', () => { mesActual = m; dibujarPlus(perfilId); });
       tabs.append(b);
     });
 
@@ -139,10 +156,16 @@
       const label = el('label');
       const input = el('input');
       input.type = 'checkbox';
-      input.checked = Recrea.tareasHechas(u.id, perfilId, mesActual).includes(i);
-      input.addEventListener('change', () => {
-        Recrea.marcarTarea(u.id, perfilId, mesActual, i, input.checked);
-        actualizarProgreso(u, perfilId, datos.pasos.length);
+      input.checked = Cuentas.tareasHechas(u, perfilId, mesActual).includes(i);
+      input.addEventListener('change', async () => {
+        const marcada = input.checked;
+        try {
+          u = await Cuentas.marcarTarea(perfilId, mesActual, i, marcada);
+          actualizarProgreso(perfilId, datos.pasos.length);
+        } catch (err) {
+          input.checked = !marcada;
+          document.getElementById('progresoTexto').textContent = 'No se pudo guardar el avance: ' + err.message;
+        }
       });
       label.append(input, el('span', '', paso));
       li.append(label);
@@ -153,11 +176,11 @@
     document.getElementById('viviendaTitulo').textContent = esCasa ? 'Para tu casa' : 'Para tu departamento';
     document.getElementById('viviendaTexto').textContent = esCasa ? datos.casa : datos.depto;
     document.getElementById('economiaTexto').textContent = datos.economia;
-    actualizarProgreso(u, perfilId, datos.pasos.length);
+    actualizarProgreso(perfilId, datos.pasos.length);
   }
 
-  function actualizarProgreso(u, perfilId, total) {
-    const hechas = Recrea.tareasHechas(u.id, perfilId, mesActual).length;
+  function actualizarProgreso(perfilId, total) {
+    const hechas = Cuentas.tareasHechas(u, perfilId, mesActual).length;
     const pct = Math.round((hechas / total) * 100);
     document.getElementById('progresoRelleno').style.width = pct + '%';
     document.getElementById('progresoTexto').textContent =
@@ -172,11 +195,12 @@
   }
 
   /* ---------- Resumen de la cuenta ---------- */
-  function dibujarResumen(u, info) {
+  function dibujarResumen(info) {
     const plan = PLANES.find(p => p.id === u.plan);
     const dl = document.getElementById('cuentaResumen');
     dl.textContent = '';
     [
+      ['Usuario', u.usuario],
       ['Plan', plan.nombre + (plan.precio ? ' (' + formatoCLP(plan.precio) + ' ' + plan.periodo + ', ficticio)' : '')],
       ['Perfil', info.nombre],
       ['Vivienda', u.vivienda === 'casa' ? 'Casa' : 'Departamento'],
@@ -186,7 +210,7 @@
   }
 
   /* ---------- Cambio de plan ---------- */
-  function dibujarCambioPlan(u) {
+  function dibujarCambioPlan() {
     const cont = document.getElementById('opcionesCambio');
     cont.textContent = '';
     const pedido = new URLSearchParams(location.search).get('cambiar');
@@ -209,8 +233,7 @@
     const estadoCambio = document.getElementById('estadoCambio');
     const estadoCuenta = document.getElementById('estadoCuenta');
 
-    document.getElementById('btnCambiar').addEventListener('click', () => {
-      const u = Recrea.usuarioActivo();
+    document.getElementById('btnCambiar').addEventListener('click', async () => {
       const nuevo = (document.querySelector('input[name=cambioPlan]:checked') || {}).value;
       if (!u || !nuevo) return;
       if (nuevo === u.plan) {
@@ -218,11 +241,16 @@
         estadoCambio.className = 'estado';
         return;
       }
-      Recrea.actualizarUsuario(u.id, { plan: nuevo });
-      mostrarCuenta();
-      estadoCambio.textContent = 'Listo: ahora estás en ' + nombrePlan(nuevo) + ' (simulado, sin cobros).';
-      estadoCambio.className = 'estado estado--ok';
-      history.replaceState(null, '', 'miembros.html');
+      try {
+        u = await Cuentas.actualizar({ plan: nuevo });
+        mostrarCuenta();
+        estadoCambio.textContent = 'Listo: ahora estás en ' + nombrePlan(nuevo) + ' (simulado, sin cobros).';
+        estadoCambio.className = 'estado estado--ok';
+        history.replaceState(null, '', 'miembros.html');
+      } catch (err) {
+        estadoCambio.textContent = err.message;
+        estadoCambio.className = 'estado estado--error';
+      }
     });
 
     document.getElementById('btnSubir').addEventListener('click', () => {
@@ -230,31 +258,44 @@
       if (r) r.checked = true;
     });
 
-    document.getElementById('btnSalir').addEventListener('click', () => { Recrea.salir(); location.href = 'miembros.html'; });
+    document.getElementById('btnSalir').addEventListener('click', async () => {
+      await Cuentas.salir();
+      location.href = 'miembros.html';
+    });
 
-    // Eliminar con confirmación en 2 pasos
+    // Eliminar con confirmación en 2 pasos (en cuentas reales pide la contraseña)
     const btn = document.getElementById('btnEliminar');
-    let esperando = false, temporizador = null;
-    btn.addEventListener('click', () => {
+    const cajaClave = document.getElementById('confirmarEliminar');
+    const campoClave = document.getElementById('claveEliminar');
+    let esperando = false;
+    btn.addEventListener('click', async () => {
       if (!esperando) {
         esperando = true;
         btn.textContent = 'Confirmar: eliminar cuenta';
-        estadoCuenta.textContent = 'Presiona de nuevo para borrar esta cuenta simulada y su progreso.';
+        if (!u.ejemplo) { cajaClave.hidden = false; campoClave.focus(); }
+        estadoCuenta.textContent = 'Presiona de nuevo para borrar esta cuenta y su progreso. No se puede deshacer.';
         estadoCuenta.className = 'estado';
-        temporizador = setTimeout(() => {
-          esperando = false; btn.textContent = 'Eliminar cuenta'; estadoCuenta.textContent = '';
-        }, 6000);
-      } else {
-        clearTimeout(temporizador);
-        const u = Recrea.usuarioActivo();
-        if (u) Recrea.eliminarUsuario(u.id);
+        return;
+      }
+      btn.disabled = true;
+      try {
+        await Cuentas.eliminar(campoClave.value);
         location.href = 'miembros.html';
+      } catch (err) {
+        estadoCuenta.textContent = err.message;
+        estadoCuenta.className = 'estado estado--error';
+        btn.disabled = false;
       }
     });
   }
 
   /* ---------- Inicio ---------- */
-  if (Recrea.usuarioActivo()) {
+  try {
+    u = await Cuentas.sesion();
+  } catch (err) {
+    u = null;
+  }
+  if (u) {
     registrarBotones();
     mostrarCuenta();
     if (location.hash === '#cambiar-plan') {
