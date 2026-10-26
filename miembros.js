@@ -9,6 +9,14 @@
   const vistaAcceso = document.getElementById('vistaAcceso');
   const vistaCuenta = document.getElementById('vistaCuenta');
   if (!vistaAcceso || !vistaCuenta) return;
+  if (typeof Cuentas === 'undefined' || typeof PLANES === 'undefined') {
+    const msg = document.createElement('p');
+    msg.className = 'estado estado--error';
+    msg.style.padding = '24px';
+    msg.textContent = 'Faltan archivos del sitio (js/cuentas.js o js/planes-data.js). Abre diagnostico.html para ver cuáles.';
+    document.getElementById('contenido').prepend(msg);
+    return;
+  }
 
   function el(tag, clase, texto) {
     const e = document.createElement(tag);

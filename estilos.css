@@ -356,3 +356,7 @@ form label:not(.check):not(.opcion-plan):not(.sr-only) { display: block; font-we
 .aviso-modo { background: var(--aviso-fondo); border: 1px solid var(--aviso-borde); border-radius: 12px; padding: 12px 16px; margin: 18px 0 8px; font-size: .95rem; }
 #confirmarEliminar { margin-top: 16px; }
 .boton--ancho:disabled { opacity: .6; cursor: wait; }
+
+.recursos-plus { margin-top: 18px; }
+.lista-recursos { padding-left: 1.2em; margin: 8px 0 0; }
+.lista-recursos li { margin: 8px 0; }

@@ -70,8 +70,10 @@
       card.append(b);
     } else if (usuario) {
       card.append(enlace('Cambiar a este plan', 'miembros.html?cambiar=' + plan.id + '#cambiar-plan', clase));
+    } else if (plan.id === 'gratis') {
+      card.append(enlace('Usar sin cuenta', 'index.html#cuestionario', clase));
     } else {
-      card.append(enlace(plan.id === 'gratis' ? 'Crear cuenta gratis' : 'Elegir este plan', 'inscripcion.html?plan=' + plan.id, clase));
+      card.append(enlace('Crear cuenta y probar Plus', 'inscripcion.html?plan=' + plan.id, clase));
     }
     grid.append(card);
   });

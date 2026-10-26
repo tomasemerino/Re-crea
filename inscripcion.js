@@ -7,6 +7,11 @@
 (function () {
   const form = document.getElementById('formInscripcion');
   if (!form) return;
+  if (typeof Cuentas === 'undefined' || typeof PLANES === 'undefined') {
+    form.replaceWith(Object.assign(document.createElement('p'), { className: 'estado estado--error',
+      textContent: 'Faltan archivos del sitio (js/cuentas.js o js/planes-data.js). Abre diagnostico.html para ver cuáles.' }));
+    return;
+  }
 
   const vistaForm = document.getElementById('vistaFormulario');
   const vistaConf = document.getElementById('vistaConfirmacion');
@@ -18,7 +23,8 @@
 
   // Plan elegido por la dirección: inscripcion.html?plan=anual
   const parametro = new URLSearchParams(location.search).get('plan');
-  const planInicial = PLANES.some(p => p.id === parametro) ? parametro : 'mensual';
+  const PLANES_PLUS = PLANES.filter(p => p.id !== 'gratis');      // toda cuenta nueva tiene acceso a Plus
+  const planInicial = PLANES_PLUS.some(p => p.id === parametro) ? parametro : 'mensual';
 
   function el(tag, clase, texto) {
     const e = document.createElement(tag);
@@ -37,13 +43,13 @@
   });
 
   /* ---------- 1) Opciones de plan ---------- */
-  PLANES.forEach(plan => {
+  PLANES_PLUS.forEach(plan => {
     const label = el('label', 'opcion-plan');
     const input = el('input');
     input.type = 'radio'; input.name = 'plan'; input.value = plan.id;
     input.checked = plan.id === planInicial;
     const caja = el('span', 'opcion-plan__caja');
-    const detalle = plan.precio === 0 ? 'Gratis' : formatoCLP(plan.precio) + ' ' + plan.periodo + ' (ficticio)';
+    const detalle = formatoCLP(plan.precio) + ' ' + plan.periodo + ' (ficticio, no se cobra)';
     caja.append(el('strong', '', plan.nombre), el('span', '', detalle));
     label.append(input, caja);
     opcionesPlan.append(label);
@@ -129,14 +135,14 @@
     vistaConf.hidden = false;
     document.getElementById('confTitulo').textContent = '¡Bienvenido/a, ' + u.usuario + '!';
     document.getElementById('confTexto').textContent = plan.precio === 0
-      ? 'Tu cuenta con el plan Gratis está lista. Puedes pasar a Plus cuando quieras desde "Mi cuenta".'
-      : 'Tu cuenta con ' + plan.nombre + ' está lista. Tu primer plan mensual ya te espera en "Mi cuenta".';
+      ? 'Tu cuenta está lista.'
+      : 'Tu cuenta está lista y ya tienes acceso completo a ' + plan.nombre + ', sin cobro. Tu primer plan mensual te espera en "Mi cuenta".';
     const dl = document.getElementById('confResumen');
     dl.textContent = '';
     [
       ['Usuario', u.usuario],
       ['Plan', plan.nombre],
-      ['Monto (ficticio)', plan.precio === 0 ? 'Gratis' : formatoCLP(plan.precio) + ' ' + plan.periodo],
+      ['Precio de referencia (ficticio)', plan.precio === 0 ? 'Gratis' : formatoCLP(plan.precio) + ' ' + plan.periodo + ' · hoy: $0'],
       ['Perfil', PERFILES_PLUS[u.perfilId].nombre],
       ['Código de simulación', u.codigo],
       ['Fecha', new Date(u.fecha).toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' })]

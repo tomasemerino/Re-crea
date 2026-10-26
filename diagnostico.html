@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Diagnóstico | Re-crea</title>
+<style>
+  body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background:#fbfcf8; color:#1f2a1a; line-height:1.5; }
+  main { max-width: 760px; margin: 0 auto; padding: 24px 16px 60px; }
+  h1 { color:#2f5a14; margin-bottom:.2em; }
+  table { width:100%; border-collapse:collapse; background:#fff; margin:14px 0; }
+  td, th { border:1px solid #d9e2cc; padding:8px 10px; text-align:left; vertical-align:top; font-size:.95rem; }
+  th { background:#eaf3df; }
+  .ok { color:#2f6b12; font-weight:700; }
+  .mal { color:#b3261e; font-weight:700; }
+  .aviso { color:#8a5a00; font-weight:700; }
+  code { background:#eef2e6; padding:1px 5px; border-radius:5px; }
+  .caja { background:#fff; border:1px solid #d9e2cc; border-radius:12px; padding:12px 16px; margin:14px 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Diagnóstico del sitio</h1>
+  <p>Esta página revisa si los archivos de Re-crea están bien subidos y si Firebase responde. Sirve para encontrar por qué algo "se ve raro" o no deja crear cuentas.</p>
+  <table>
+    <thead><tr><th>Archivo</th><th>Estado</th></tr></thead>
+    <tbody id="filas"><tr><td colspan="2">Revisando…</td></tr></tbody>
+  </table>
+  <div class="caja" id="resumen" hidden></div>
+  <h2>Firebase</h2>
+  <table>
+    <tbody id="filasFb"><tr><td colspan="2">Revisando…</td></tr></tbody>
+  </table>
+
+<script>
+(async function () {
+  const T = 'v4.1';   // versión de esta revisión
+  // [ruta, texto que debe contener la versión correcta, descripción]
+  const ARCHIVOS = [
+    ['index.html', 'js/menu.js', ''],
+    ['planes.html', 'js/planes.js', ''],
+    ['inscripcion.html', 'id="usuario"', 'formulario con usuario y contraseña'],
+    ['miembros.html', 'id="formAcceso"', 'formulario de inicio de sesión'],
+    ['css/estilos.css', 'Cuentas con contraseña (v4)', 'estilos v4'],
+    ['js/cuentas.js', 'window.Cuentas', ''],
+    ['js/estado.js', 'js/cuentas.js', 'estado v4'],
+    ['js/inscripcion.js', 'Cuentas.registrar', ''],
+    ['js/miembros.js', 'Cuentas.entrar', ''],
+    ['js/planes.js', 'Cuentas.sesion', ''],
+    ['js/menu.js', 'recrea:sesion', ''],
+    ['js/planes-data.js', 'USUARIOS_EJEMPLO', ''],
+    ['js/cuestionario.js', 'cta-plus', ''],
+    ['js/opiniones.js', 'firebaseConfig', ''],
+    ['js/config-firebase.js', 'firebaseConfig', ''],
+    ['sw.js', 'recrea-v4', 'service worker v4']
+  ];
+  const filas = document.getElementById('filas');
+  filas.textContent = '';
+  let problemas = 0, configTexto = '';
+
+  async function traer(ruta) {
+    const r = await fetch(ruta + '?diag=' + Date.now(), { cache: 'no-store' });
+    const t = await r.text();
+    return { ok: r.ok && !/<title>.*(not found|404)/i.test(t.slice(0, 600)), texto: t };
+  }
+  function fila(nombre, clase, texto) {
+    const tr = document.createElement('tr');
+    const a = document.createElement('td'); a.innerHTML = '<code></code>'; a.firstChild.textContent = nombre;
+    const b = document.createElement('td'); b.className = clase; b.textContent = texto;
+    tr.append(a, b); return tr;
+  }
+
+  for (const [ruta, marca, desc] of ARCHIVOS) {
+    try {
+      const r = await traer(ruta);
+      if (!r.ok) { problemas++; filas.append(fila(ruta, 'mal', 'NO ESTÁ en el sitio (falta subirlo).')); continue; }
+      if (ruta === 'js/config-firebase.js') configTexto = r.texto;
+      if (!r.texto.includes(marca)) { problemas++; filas.append(fila(ruta, 'mal', 'Está, pero es una versión ANTIGUA' + (desc ? ' (' + desc + ')' : '') + '. Hay que reemplazarlo.')); }
+      else filas.append(fila(ruta, 'ok', 'Correcto'));
+    } catch (e) {
+      problemas++; filas.append(fila(ruta, 'mal', 'No se pudo revisar (' + e.message + ').'));
+    }
+  }
+
+  // Carpetas duplicadas por una mala subida (ej. css/css/estilos.css o re-crea/index.html)
+  for (const dup of ['css/css/estilos.css', 'js/js/cuentas.js', 're-crea/index.html', 'recrea/index.html']) {
+    try {
+      const r = await fetch(dup + '?diag=' + Date.now(), { cache: 'no-store' });
+      const t = await r.text();
+      if (r.ok && !t.trim().startsWith('<')) {
+        problemas++; filas.append(fila(dup, 'aviso', 'Carpeta duplicada: los archivos se subieron dentro de otra carpeta. Muévelos a la raíz.'));
+      }
+    } catch { /* sin acción */ }
+  }
+
+  const resumen = document.getElementById('resumen');
+  resumen.hidden = false;
+  resumen.innerHTML = problemas === 0
+    ? '<strong class="ok">Todos los archivos están bien subidos.</strong>'
+    : '<strong class="mal">Hay ' + problemas + ' problema(s).</strong> Sube de nuevo los archivos marcados en rojo, respetando las carpetas <code>css/</code> y <code>js/</code>, en la rama <code>main</code>. Después espera a que Netlify termine de publicar y recarga con Ctrl + F5.';
+
+  /* ---------- Firebase ---------- */
+  const fb = document.getElementById('filasFb');
+  fb.textContent = '';
+  const configurado = configTexto && /apiKey:\s*"/.test(configTexto) && !/apiKey:\s*"PEGA_AQUI/.test(configTexto);
+  fb.append(fila('js/config-firebase.js', configurado ? 'ok' : 'mal',
+    configurado ? 'Tiene tus datos de Firebase.' : 'Todavía tiene los textos PEGA_AQUI: las cuentas funcionan solo en modo de prueba (este navegador).'));
+  if (configurado) {
+    try {
+      const s = document.createElement('script'); s.src = 'js/cuentas.js?diag=' + Date.now();
+      await new Promise((ok, no) => { s.onload = ok; s.onerror = no; document.head.append(s); });
+      const modo = await window.Cuentas.modo();
+      fb.append(fila('Conexión', modo === 'nube' ? 'ok' : 'mal', modo === 'nube' ? 'Conectado en modo nube.' : 'Modo local (no se leyó la configuración).'));
+      try {
+        await window.Cuentas.entrar('diagnostico.x', 'no-existe-1');
+      } catch (e) {
+        if (e.codigo === 'credenciales') fb.append(fila('Authentication', 'ok', 'Correo/contraseña está ACTIVADO: Firebase respondió que el usuario de prueba no existe, como debe ser.'));
+        else if (e.codigo === 'config') fb.append(fila('Authentication', 'mal', 'No está activado: Firebase → Authentication → Método de acceso → Correo electrónico/contraseña → Habilitar.'));
+        else fb.append(fila('Authentication', 'aviso', e.message));
+      }
+    } catch (e) {
+      fb.append(fila('Conexión', 'mal', 'No se pudo cargar Firebase: ' + (e.message || 'revisa tu internet') + '.'));
+    }
+    fb.append(fila('Reglas de Firestore', 'aviso', 'No se pueden revisar desde aquí: pega firestore.rules en Firebase → Firestore → Reglas → Publicar. Si al crear una cuenta ves "faltan publicar las reglas", es eso.'));
+  }
+})();
+</script>
+</main>
+</body>
+</html>
